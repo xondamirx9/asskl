@@ -1,1139 +1,724 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MEBEL STUDIO — Мебель для Вашего дома</title>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MEBEL.STUDIO — Премиум мебель · Ташкент</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#14110d;--ink2:#1b1712;--ink3:#241f18;
+  --cream:#f4efe6;--cream2:#faf7f1;--warm:#ece3d4;
+  --gold:#c2a06a;--gold-l:#d8bd8c;--gold-d:#9c7d4e;
+  --on-dark:#ece6da;--on-dark-mut:#a89e8c;
+  --on-light:#2a241b;--on-light-mut:#6e6352;
+  --line-d:rgba(255,255,255,.12);--line-l:rgba(20,17,13,.12);
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Manrope',system-ui,-apple-system,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);background:var(--ink);color:var(--on-dark);overflow-x:hidden;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+::selection{background:var(--gold);color:var(--ink);}
+::-webkit-scrollbar{width:9px;}::-webkit-scrollbar-track{background:var(--ink2);}::-webkit-scrollbar-thumb{background:var(--gold-d);border-radius:5px;}
+img{display:block;}
+.disp{font-family:var(--serif);font-weight:300;letter-spacing:-.01em;}
+.disp em{font-style:italic;color:var(--gold);font-weight:400;}
+.reveal{will-change:transform;}
 
-    :root {
-      --cream:    #faf8f5;
-      --milk:     #f5f0e8;
-      --warm:     #ede8df;
-      --accent:   #c8a97e;
-      --accent2:  #8b6f47;
-      --dark:     #2c2416;
-      --text:     #4a3f30;
-      --light:    #fff9f2;
-    }
+@keyframes riseIn{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes scrollPulse{0%,100%{transform:scaleY(1);opacity:1;}50%{transform:scaleY(.35);opacity:.3;}}
+@keyframes marquee{to{transform:translateX(-50%);}}
+@keyframes slowZoom{from{transform:scale(1.04);}to{transform:scale(1.16);}}
 
-    html { scroll-behavior: smooth; }
+.nav-link{position:relative;}
+.nav-link::after{content:'';position:absolute;left:0;bottom:-6px;height:1px;width:0;background:var(--gold);transition:width .35s cubic-bezier(.2,.7,.2,1);}
+.nav-link:hover{color:var(--on-dark)!important;}
+.nav-link:hover::after{width:100%;}
 
-    body {
-      font-family: 'Georgia', serif;
-      background: var(--cream);
-      color: var(--text);
-      overflow-x: hidden;
-    }
+/* ── Responsive ── */
+@media(max-width:1024px){
+  .nav-center{display:none!important;}
+  .grid-2{grid-template-columns:1fr!important;}
+  .collection-grid{grid-template-columns:1fr 1fr!important;}
+  .process-grid{grid-template-columns:1fr 1fr!important;}
+  .gallery-grid{grid-template-columns:1fr 1fr!important;grid-auto-rows:240px!important;}
+  .reviews-grid{grid-template-columns:1fr!important;}
+  .contact-grid{grid-template-columns:1fr!important;}
+}
+@media(max-width:680px){
+  .collection-grid,.process-grid,.gallery-grid{grid-template-columns:1fr!important;}
+  .pad-x{padding-left:24px!important;padding-right:24px!important;}
+  .form-row{grid-template-columns:1fr!important;}
+  .hero-h1{font-size:54px!important;}
+  .disp-xl{font-size:38px!important;}
+  .nav-cta{display:none!important;}
+  .hero-mini{display:none!important;}
+  .hero-scroll{display:none!important;}
+}
 
-    /* ─── SCROLLBAR ─── */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--milk); }
-    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+/* ── Buttons / links hover ── */
+.btn-gold{text-decoration:none;background:var(--gold);color:var(--ink);font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;padding:18px 38px;border-radius:2px;display:inline-block;transition:background .3s,transform .25s,box-shadow .3s;}
+.btn-gold:hover{background:var(--gold-l);transform:translateY(-2px);box-shadow:0 18px 50px rgba(0,0,0,.45);}
+.btn-outline-w{text-decoration:none;background:transparent;color:#fff;border:1px solid rgba(255,255,255,.35);font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;padding:18px 38px;border-radius:2px;display:inline-block;transition:background .3s,border-color .3s,transform .25s;}
+.btn-outline-w:hover{background:rgba(255,255,255,.08);border-color:#fff;transform:translateY(-2px);}
 
-    /* ─── NAV ─── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      padding: 24px 60px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      transition: background 0.4s, box-shadow 0.4s, padding 0.4s;
-    }
-    nav.scrolled {
-      background: rgba(250,248,245,0.96);
-      backdrop-filter: blur(12px);
-      box-shadow: 0 1px 30px rgba(44,36,22,0.08);
-      padding: 16px 60px;
-    }
-    .nav-logo {
-      font-size: 22px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      color: var(--dark);
-      text-transform: uppercase;
-    }
-    .nav-logo span { color: var(--accent); }
-    .nav-links { display: flex; gap: 40px; list-style: none; }
-    .nav-links a {
-      text-decoration: none;
-      color: var(--text);
-      font-size: 13px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      position: relative;
-      transition: color 0.3s;
-    }
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: -4px; left: 0;
-      width: 0; height: 1px;
-      background: var(--accent);
-      transition: width 0.3s;
-    }
-    .nav-links a:hover { color: var(--accent2); }
-    .nav-links a:hover::after { width: 100%; }
-
-    /* ─── HERO ─── */
-    #hero {
-      position: relative;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      overflow: hidden;
-      background: var(--cream);
-    }
-
-    /* Floating blobs */
-    .blob {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.5;
-      will-change: transform;
-      pointer-events: none;
-    }
-    .blob-1 {
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, #e8d5b8 0%, #f5e6cc 100%);
-      top: -150px; right: -100px;
-    }
-    .blob-2 {
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, #d4c4a8 0%, #e8dcc8 100%);
-      bottom: 0; left: -80px;
-    }
-    .blob-3 {
-      width: 300px; height: 300px;
-      background: radial-gradient(circle, #c8a97e44 0%, transparent 100%);
-      top: 40%; left: 40%;
-    }
-
-    /* Grid lines background */
-    .grid-bg {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(200,169,126,0.07) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(200,169,126,0.07) 1px, transparent 1px);
-      background-size: 60px 60px;
-      will-change: transform;
-    }
-
-    /* Floating furniture shapes */
-    .shape {
-      position: absolute;
-      opacity: 0.06;
-      will-change: transform;
-    }
-    .shape svg { fill: var(--accent2); }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      padding: 0 60px;
-      max-width: 700px;
-    }
-    .hero-tag {
-      display: inline-block;
-      font-size: 11px;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 24px;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.8s 0.3s forwards;
-    }
-    .hero-title {
-      font-size: clamp(42px, 6vw, 88px);
-      font-weight: 300;
-      line-height: 1.1;
-      color: var(--dark);
-      margin-bottom: 28px;
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeUp 0.9s 0.5s forwards;
-    }
-    .hero-title em {
-      font-style: italic;
-      color: var(--accent);
-    }
-    .hero-desc {
-      font-size: 17px;
-      line-height: 1.8;
-      color: var(--text);
-      max-width: 480px;
-      margin-bottom: 48px;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.8s 0.7s forwards;
-    }
-    .hero-btns {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.8s 0.9s forwards;
-    }
-    .btn-primary {
-      padding: 16px 40px;
-      background: var(--accent2);
-      color: #fff;
-      border: none;
-      font-size: 12px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
-    }
-    .btn-primary:hover {
-      background: var(--dark);
-      transform: translateY(-2px);
-      box-shadow: 0 12px 40px rgba(44,36,22,0.25);
-    }
-    .btn-outline {
-      padding: 16px 40px;
-      background: transparent;
-      color: var(--dark);
-      border: 1px solid var(--dark);
-      font-size: 12px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.3s, color 0.3s, transform 0.2s;
-    }
-    .btn-outline:hover {
-      background: var(--dark);
-      color: #fff;
-      transform: translateY(-2px);
-    }
-
-    /* Hero image side */
-    .hero-image {
-      position: absolute;
-      right: 0; top: 0;
-      width: 50%;
-      height: 100%;
-      overflow: hidden;
-      opacity: 0;
-      animation: fadeIn 1.2s 1s forwards;
-    }
-    .hero-image-inner {
-      width: 100%;
-      height: 120%;
-      background:
-        linear-gradient(135deg, rgba(250,248,245,0.3) 0%, transparent 60%),
-        url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1400&q=85') center/cover no-repeat;
-      will-change: transform;
-    }
-    .hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, var(--cream) 0%, transparent 40%);
-    }
-
-    /* Scroll indicator */
-    .scroll-indicator {
-      position: absolute;
-      bottom: 40px; left: 60px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      opacity: 0;
-      animation: fadeIn 1s 1.5s forwards;
-    }
-    .scroll-line {
-      width: 1px;
-      height: 60px;
-      background: var(--accent);
-      animation: scrollLine 2s ease-in-out infinite;
-    }
-    .scroll-text {
-      font-size: 10px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--accent);
-      writing-mode: vertical-lr;
-    }
-
-    /* ─── SECTION BASE ─── */
-    section { position: relative; overflow: hidden; }
-
-    .section-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 60px;
-    }
-
-    .section-tag {
-      font-size: 11px;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 16px;
-      display: block;
-    }
-    .section-title {
-      font-size: clamp(32px, 4vw, 56px);
-      font-weight: 300;
-      color: var(--dark);
-      line-height: 1.2;
-      margin-bottom: 24px;
-    }
-    .section-title em { font-style: italic; color: var(--accent); }
-
-    /* ─── STATS BAR ─── */
-    .stats-bar {
-      background: var(--dark);
-      padding: 40px 60px;
-      display: flex;
-      justify-content: center;
-      gap: 80px;
-      flex-wrap: wrap;
-      overflow: hidden;
-    }
-    .stat-item {
-      text-align: center;
-      opacity: 0;
-      transform: translateX(-60px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .stat-item.slide-in {
-      opacity: 1;
-      transform: translateX(0);
-    }
-    .stat-num {
-      font-size: 42px;
-      font-weight: 300;
-      color: var(--accent);
-      display: block;
-      line-height: 1;
-    }
-    .stat-label {
-      font-size: 11px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
-      margin-top: 8px;
-      display: block;
-    }
-
-    /* ─── ABOUT / PRODUCT ─── */
-    #product {
-      padding: 120px 0;
-      background: var(--light);
-    }
-
-    /* Parallax orbs */
-    .orb {
-      position: absolute;
-      border-radius: 50%;
-      will-change: transform;
-      pointer-events: none;
-    }
-    .orb-1 {
-      width: 500px; height: 500px;
-      background: radial-gradient(circle, rgba(200,169,126,0.12) 0%, transparent 70%);
-      top: -100px; right: -100px;
-    }
-    .orb-2 {
-      width: 350px; height: 350px;
-      background: radial-gradient(circle, rgba(200,169,126,0.08) 0%, transparent 70%);
-      bottom: 0; left: 0;
-    }
-
-    .product-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
-      margin-bottom: 80px;
-    }
-    .product-text {}
-    .product-desc {
-      font-size: 16px;
-      line-height: 1.9;
-      color: var(--text);
-      margin-bottom: 40px;
-    }
-    .features-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    .features-list li {
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-      font-size: 15px;
-      color: var(--text);
-    }
-    .features-list li::before {
-      content: '';
-      flex-shrink: 0;
-      width: 20px; height: 1px;
-      background: var(--accent);
-      margin-top: 11px;
-    }
-
-    .product-visual {
-      position: relative;
-    }
-    .product-img-wrap {
-      position: relative;
-      overflow: hidden;
-    }
-    .product-img-wrap::before {
-      content: '';
-      position: absolute;
-      inset: -3px;
-      border: 1px solid var(--accent);
-      z-index: 1;
-      transform: translate(12px, 12px);
-      transition: transform 0.4s;
-    }
-    .product-img-wrap:hover::before {
-      transform: translate(6px, 6px);
-    }
-    .product-img-wrap img {
-      width: 100%;
-      height: 500px;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.6s;
-    }
-    .product-img-wrap:hover img {
-      transform: scale(1.04);
-    }
-
-    /* Cards */
-    .product-cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
-    }
-    .product-card {
-      background: var(--warm);
-      padding: 48px 36px;
-      transition: background 0.3s, transform 0.3s;
-      cursor: default;
-    }
-    .product-card:hover {
-      background: var(--dark);
-      transform: translateY(-4px);
-    }
-    .product-card:hover .card-title,
-    .product-card:hover .card-desc { color: #fff; }
-    .card-icon {
-      width: 48px; height: 48px;
-      margin-bottom: 28px;
-      opacity: 0.5;
-      transition: opacity 0.3s;
-    }
-    .product-card:hover .card-icon { opacity: 1; }
-    .card-icon svg { width: 100%; height: 100%; stroke: var(--accent); fill: none; stroke-width: 1.5; }
-    .card-title {
-      font-size: 20px;
-      font-weight: 400;
-      color: var(--dark);
-      margin-bottom: 12px;
-      transition: color 0.3s;
-    }
-    .card-desc {
-      font-size: 14px;
-      line-height: 1.7;
-      color: var(--text);
-      transition: color 0.3s;
-    }
-
-    /* ─── GALLERY STRIP ─── */
-    .gallery-strip {
-      display: flex;
-      gap: 2px;
-      overflow: hidden;
-      height: 320px;
-      background: var(--warm);
-    }
-    .gallery-strip-item {
-      flex: 1;
-      overflow: hidden;
-      position: relative;
-    }
-    .gallery-strip-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.6s;
-    }
-    .gallery-strip-item:hover img { transform: scale(1.08); }
-    .gallery-strip-item::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(44,36,22,0);
-      transition: background 0.3s;
-    }
-    .gallery-strip-item:hover::after {
-      background: rgba(44,36,22,0.15);
-    }
-
-    /* ─── FORM SECTION ─── */
-    #form-section {
-      padding: 120px 0;
-      background: var(--cream);
-      position: relative;
-    }
-
-    /* Animated lines */
-    .lines-bg {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-      pointer-events: none;
-    }
-    .lines-bg::before,
-    .lines-bg::after {
-      content: '';
-      position: absolute;
-      width: 1px;
-      background: linear-gradient(to bottom, transparent, rgba(200,169,126,0.3), transparent);
-      will-change: transform;
-    }
-    .lines-bg::before { height: 100%; left: 20%; animation: lineFloat 8s ease-in-out infinite; }
-    .lines-bg::after  { height: 80%; right: 25%; top: 10%; animation: lineFloat 10s ease-in-out infinite reverse; }
-
-    .form-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: start;
-    }
-    .form-left {}
-    .form-promise {
-      margin-top: 48px;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-    .promise-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 20px;
-    }
-    .promise-dot {
-      flex-shrink: 0;
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: var(--accent);
-      margin-top: 6px;
-    }
-    .promise-text {
-      font-size: 14px;
-      line-height: 1.7;
-      color: var(--text);
-    }
-    .promise-text strong {
-      display: block;
-      color: var(--dark);
-      margin-bottom: 4px;
-      font-weight: 400;
-      letter-spacing: 0.5px;
-    }
-
-    /* Form */
-    .form-right {}
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .field label {
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--accent2);
-    }
-    .field input,
-    .field select,
-    .field textarea {
-      background: var(--milk);
-      border: 1px solid transparent;
-      border-bottom-color: var(--warm);
-      padding: 14px 16px;
-      font-size: 15px;
-      font-family: inherit;
-      color: var(--dark);
-      outline: none;
-      transition: border-color 0.3s, background 0.3s;
-      appearance: none;
-      width: 100%;
-    }
-    .field input:focus,
-    .field select:focus,
-    .field textarea:focus {
-      border-color: var(--accent);
-      background: #fff;
-    }
-    .field textarea { min-height: 120px; resize: vertical; }
-    .field select {
-      cursor: pointer;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c8a97e' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 16px center;
-      padding-right: 40px;
-    }
-
-    .form-submit {
-      margin-top: 8px;
-    }
-    .btn-submit {
-      width: 100%;
-      padding: 18px;
-      background: var(--accent2);
-      color: #fff;
-      border: none;
-      font-size: 12px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      cursor: pointer;
-      font-family: inherit;
-      transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
-      position: relative;
-      overflow: hidden;
-    }
-    .btn-submit::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%;
-      width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-      transition: left 0.5s;
-    }
-    .btn-submit:hover::before { left: 100%; }
-    .btn-submit:hover {
-      background: var(--dark);
-      box-shadow: 0 12px 40px rgba(44,36,22,0.3);
-    }
-    .btn-submit:active { transform: scale(0.99); }
-
-    /* Success message */
-    .form-success {
-      display: none;
-      text-align: center;
-      padding: 60px 40px;
-      background: var(--milk);
-    }
-    .form-success.show { display: block; }
-    .success-icon {
-      width: 64px; height: 64px;
-      border: 1px solid var(--accent);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 24px;
-    }
-    .success-icon svg { stroke: var(--accent); fill: none; }
-    .success-title { font-size: 28px; font-weight: 300; color: var(--dark); margin-bottom: 12px; }
-    .success-text { font-size: 15px; color: var(--text); line-height: 1.7; }
-
-    /* ─── FOOTER ─── */
-    footer {
-      background: var(--dark);
-      padding: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 24px;
-    }
-    .footer-logo { font-size: 20px; letter-spacing: 3px; color: #fff; }
-    .footer-logo span { color: var(--accent); }
-    .footer-copy { font-size: 12px; color: rgba(255,255,255,0.35); letter-spacing: 1px; }
-    .footer-links { display: flex; gap: 32px; }
-    .footer-links a {
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
-      text-decoration: none;
-      transition: color 0.3s;
-    }
-    .footer-links a:hover { color: var(--accent); }
-
-    /* ─── ANIMATIONS ─── */
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeIn {
-      to { opacity: 1; }
-    }
-    @keyframes scrollLine {
-      0%, 100% { transform: scaleY(1); opacity: 1; }
-      50% { transform: scaleY(0.4); opacity: 0.3; }
-    }
-    @keyframes lineFloat {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-40px); }
-    }
-
-    /* Reveal animation */
-    .reveal {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
-    .reveal-delay-4 { transition-delay: 0.4s; }
-
-    /* ─── RESPONSIVE ─── */
-    @media (max-width: 900px) {
-      nav { padding: 20px 24px; }
-      nav.scrolled { padding: 14px 24px; }
-      .nav-links { display: none; }
-      .hero-content { padding: 0 24px; }
-      .hero-image { display: none; }
-      .section-inner { padding: 0 24px; }
-      .product-grid { grid-template-columns: 1fr; gap: 40px; }
-      .product-cards { grid-template-columns: 1fr; }
-      .form-layout { grid-template-columns: 1fr; gap: 40px; }
-      .form-row { grid-template-columns: 1fr; }
-      .stats-bar { gap: 40px; padding: 32px 24px; }
-      footer { padding: 40px 24px; flex-direction: column; align-items: flex-start; }
-      .gallery-strip { height: 200px; }
-    }
-  </style>
+.coll-card .coll-img{transition:transform .9s cubic-bezier(.2,.7,.2,1);}
+.coll-card:hover .coll-img{transform:scale(1.07);}
+.gal .gal-img{transition:transform .9s cubic-bezier(.2,.7,.2,1);}
+.gal:hover .gal-img{transform:scale(1.07);}
+</style>
 </head>
 <body>
 
-<!-- ─── NAV ─── -->
-<nav id="nav">
-  <div class="nav-logo">MEBEL<span>.</span>STUDIO</div>
-  <ul class="nav-links">
-    <li><a href="#hero">Главная</a></li>
-    <li><a href="#product">О продукте</a></li>
-    <li><a href="#form-section">Заявка</a></li>
-  </ul>
+<!-- ===== NAV ===== -->
+<nav id="nav" style="position:fixed;top:0;left:0;right:0;z-index:120;display:flex;align-items:center;justify-content:space-between;padding:26px 48px;transition:background .5s,backdrop-filter .5s,padding .5s,box-shadow .5s,border-color .5s;border-bottom:1px solid transparent;">
+  <a href="#hero" style="text-decoration:none;font-family:var(--sans);font-weight:700;font-size:18px;letter-spacing:.34em;color:var(--on-dark);text-transform:uppercase;">MEBEL<span style="color:var(--gold);">.</span>STUDIO</a>
+  <div class="nav-center" style="display:flex;align-items:center;gap:40px;">
+    <a class="nav-link" href="#collection" data-i18n="nav.collection" style="text-decoration:none;color:var(--on-dark-mut);font-size:12px;letter-spacing:.18em;text-transform:uppercase;transition:color .3s;">Коллекция</a>
+    <a class="nav-link" href="#process" data-i18n="nav.process" style="text-decoration:none;color:var(--on-dark-mut);font-size:12px;letter-spacing:.18em;text-transform:uppercase;transition:color .3s;">Процесс</a>
+    <a class="nav-link" href="#gallery" data-i18n="nav.gallery" style="text-decoration:none;color:var(--on-dark-mut);font-size:12px;letter-spacing:.18em;text-transform:uppercase;transition:color .3s;">Галерея</a>
+    <a class="nav-link" href="#reviews" data-i18n="nav.reviews" style="text-decoration:none;color:var(--on-dark-mut);font-size:12px;letter-spacing:.18em;text-transform:uppercase;transition:color .3s;">Отзывы</a>
+    <a class="nav-link" href="#contact" data-i18n="nav.contact" style="text-decoration:none;color:var(--on-dark-mut);font-size:12px;letter-spacing:.18em;text-transform:uppercase;transition:color .3s;">Контакты</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:18px;">
+    <button id="langBtn" style="background:transparent;border:1px solid var(--line-d);color:var(--on-dark);font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.14em;padding:9px 14px;cursor:pointer;border-radius:2px;transition:border-color .3s,color .3s;">EN</button>
+    <a href="#contact" class="nav-cta" data-i18n="nav.cta" style="text-decoration:none;background:var(--gold);color:var(--ink);font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;padding:13px 24px;border-radius:2px;transition:background .3s,transform .25s;">Оставить заявку</a>
+  </div>
 </nav>
 
-<!-- ─── HERO ─── -->
-<section id="hero">
-  <div class="grid-bg" id="gridBg"></div>
-
-  <div class="blob blob-1" id="blob1"></div>
-  <div class="blob blob-2" id="blob2"></div>
-  <div class="blob blob-3" id="blob3"></div>
-
-  <!-- Decorative shape -->
-  <div class="shape" style="top:20%;right:48%;font-size:180px;opacity:0.04;color:var(--accent2);">◆</div>
-  <div class="shape" style="bottom:15%;right:52%;font-size:80px;opacity:0.05;color:var(--accent);">○</div>
-
-  <div class="hero-image">
-    <div class="hero-image-inner" id="heroImg"></div>
-    <div class="hero-overlay"></div>
+<!-- ===== HERO ===== -->
+<section id="hero" style="position:relative;height:100vh;min-height:680px;display:flex;align-items:center;overflow:hidden;">
+  <div style="position:absolute;inset:0;overflow:hidden;background:var(--ink);">
+    <video id="heroVideo" autoplay muted loop playsinline preload="auto"
+      poster="https://images.pexels.com/videos/4231455/cosy-cosy-home-fireplace-home-decor-4231455.jpeg?auto=compress&cs=tinysrgb&h=720&w=1280"
+      style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:slowZoom 28s ease-in-out infinite alternate;">
+      <source src="https://videos.pexels.com/video-files/4231455/4231455-hd_1920_1080_25fps.mp4" type="video/mp4">
+    </video>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,17,13,.62) 0%,rgba(20,17,13,.32) 38%,rgba(20,17,13,.92) 100%);"></div>
+    <div style="position:absolute;inset:0;background:radial-gradient(130% 90% at 72% 18%,transparent 36%,rgba(20,17,13,.62) 100%);"></div>
   </div>
 
-  <div class="hero-content">
-    <span class="hero-tag">Премиум мебель · Ташкент</span>
-    <h1 class="hero-title">
-      Диваны для<br><em>настоящего</em><br>комфорта
-    </h1>
-    <p class="hero-desc">
-      Мы создаём мебель, которая становится сердцем вашего дома.
-      Каждый диван — это история уюта, рассказанная в деталях.
-    </p>
-    <div class="hero-btns">
-      <a href="#product" class="btn-primary">Смотреть коллекцию</a>
-      <a href="#form-section" class="btn-outline">Оставить заявку</a>
+  <div class="pad-x" style="position:relative;z-index:3;width:100%;max-width:1280px;margin:0 auto;padding:0 48px;">
+    <div style="max-width:760px;">
+      <div class="hero-anim" style="display:flex;align-items:center;gap:16px;margin-bottom:30px;">
+        <span style="width:46px;height:1px;background:var(--gold);"></span>
+        <span data-i18n="hero.tag" style="font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold-l);">Премиум мебель · Ташкент</span>
+      </div>
+      <h1 class="disp hero-h1 hero-anim" data-i18n="hero.title" style="font-size:clamp(52px,7.4vw,108px);line-height:1.02;color:#fff;margin-bottom:30px;">Мебель, что<br>становится <em>сердцем</em><br>вашего дома</h1>
+      <p class="hero-anim" data-i18n="hero.desc" style="font-size:18px;line-height:1.75;color:rgba(236,230,218,.82);max-width:500px;margin-bottom:44px;">Мы создаём диваны и мягкую мебель ручной работы — из отборных материалов европейского качества. Каждое изделие рассчитано на десятилетия безупречной службы.</p>
+      <div class="hero-anim" style="display:flex;gap:16px;flex-wrap:wrap;">
+        <a href="#collection" class="btn-gold" data-i18n="hero.btn1">Смотреть коллекцию</a>
+        <a href="#contact" class="btn-outline-w" data-i18n="hero.btn2">Консультация</a>
+      </div>
     </div>
   </div>
 
-  <div class="scroll-indicator">
-    <div class="scroll-line"></div>
-    <span class="scroll-text">Scroll</span>
+  <div class="hero-mini hero-anim" style="position:absolute;z-index:3;right:48px;bottom:46px;display:flex;gap:42px;">
+    <div style="text-align:right;">
+      <div class="disp" style="font-size:38px;color:var(--gold-l);line-height:1;">12</div>
+      <div data-i18n="hero.m1" style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--on-dark-mut);margin-top:7px;">лет на рынке</div>
+    </div>
+    <div style="width:1px;background:var(--line-d);"></div>
+    <div style="text-align:right;">
+      <div class="disp" style="font-size:38px;color:var(--gold-l);line-height:1;">1200+</div>
+      <div data-i18n="hero.m2" style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--on-dark-mut);margin-top:7px;">клиентов</div>
+    </div>
+    <div style="width:1px;background:var(--line-d);"></div>
+    <div style="text-align:right;">
+      <div class="disp" style="font-size:38px;color:var(--gold-l);line-height:1;">5</div>
+      <div data-i18n="hero.m3" style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--on-dark-mut);margin-top:7px;">лет гарантии</div>
+    </div>
+  </div>
+
+  <div class="hero-scroll hero-anim" style="position:absolute;z-index:3;left:48px;bottom:46px;display:flex;align-items:flex-end;gap:14px;">
+    <span style="display:block;width:1px;height:58px;background:var(--gold);transform-origin:bottom;animation:scrollPulse 2.2s ease-in-out infinite;"></span>
+    <span data-i18n="hero.scroll" style="font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-l);writing-mode:vertical-lr;">Листайте</span>
   </div>
 </section>
 
-<!-- ─── STATS ─── -->
-<div class="stats-bar">
-  <div class="stat-item">
-    <span class="stat-num" data-count="1200">0</span>
-    <span class="stat-label">Довольных клиентов</span>
-  </div>
-  <div class="stat-item">
-    <span class="stat-num" data-count="350">0</span>
-    <span class="stat-label">Моделей мебели</span>
-  </div>
-  <div class="stat-item">
-    <span class="stat-num" data-count="12">0</span>
-    <span class="stat-label">Лет на рынке</span>
-  </div>
-  <div class="stat-item">
-    <span class="stat-num" data-count="48">0</span>
-    <span class="stat-label">Часов доставки</span>
+<!-- ===== MARQUEE ===== -->
+<div style="background:var(--ink2);border-top:1px solid var(--line-d);border-bottom:1px solid var(--line-d);overflow:hidden;padding:22px 0;">
+  <div style="display:flex;width:max-content;animation:marquee 32s linear infinite;">
+    <div data-i18n="marquee" style="display:flex;align-items:center;font-family:var(--serif);font-size:30px;font-style:italic;color:rgba(236,230,218,.34);white-space:nowrap;">Бесплатная доставка по Узбекистану&nbsp;&nbsp;·&nbsp;&nbsp;Рассрочка 0%&nbsp;&nbsp;·&nbsp;&nbsp;Гарантия 5 лет&nbsp;&nbsp;·&nbsp;&nbsp;Индивидуальный дизайн&nbsp;&nbsp;·&nbsp;&nbsp;Массив дуба&nbsp;&nbsp;·&nbsp;&nbsp;</div>
+    <div data-i18n="marquee" style="display:flex;align-items:center;font-family:var(--serif);font-size:30px;font-style:italic;color:rgba(236,230,218,.34);white-space:nowrap;">Бесплатная доставка по Узбекистану&nbsp;&nbsp;·&nbsp;&nbsp;Рассрочка 0%&nbsp;&nbsp;·&nbsp;&nbsp;Гарантия 5 лет&nbsp;&nbsp;·&nbsp;&nbsp;Индивидуальный дизайн&nbsp;&nbsp;·&nbsp;&nbsp;Массив дуба&nbsp;&nbsp;·&nbsp;&nbsp;</div>
   </div>
 </div>
 
-<!-- ─── PRODUCT ─── -->
-<section id="product">
-  <div class="orb orb-1" id="orb1"></div>
-  <div class="orb orb-2" id="orb2"></div>
-
-  <div class="section-inner">
-    <div class="product-grid">
-      <div class="product-text">
-        <span class="section-tag reveal">О нашей мебели</span>
-        <h2 class="section-title reveal reveal-delay-1">
-          Качество, которое<br>можно <em>почувствовать</em>
-        </h2>
-        <p class="product-desc reveal reveal-delay-2">
-          Наши диваны и мягкая мебель создаются из отборных материалов
-          европейского качества. Каждое изделие проходит многоступенчатый
-          контроль качества и рассчитано на десятилетия безупречной службы.
-        </p>
-        <p class="product-desc reveal reveal-delay-3" style="margin-bottom:32px;">
-          Мы предлагаем широкий выбор тканей, цветов и конфигураций.
-          Ваш диван будет создан именно под вас.
-        </p>
-        <ul class="features-list">
-          <li class="reveal reveal-delay-1">Натуральные и гипоаллергенные ткани</li>
-          <li class="reveal reveal-delay-2">Ортопедические наполнители высшего класса</li>
-          <li class="reveal reveal-delay-3">Деревянный каркас из массива дуба</li>
-          <li class="reveal reveal-delay-4">Гарантия 5 лет на каркас и механизмы</li>
-        </ul>
+<!-- ===== ABOUT ===== -->
+<section id="about" style="position:relative;background:var(--ink);padding:130px 0;overflow:hidden;">
+  <div class="pad-x grid-2" style="max-width:1280px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;">
+    <div>
+      <div class="reveal" style="display:flex;align-items:center;gap:14px;margin-bottom:26px;">
+        <span style="width:34px;height:1px;background:var(--gold);"></span>
+        <span data-i18n="about.tag" style="font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);">О нашей мебели</span>
       </div>
-
-      <div class="product-visual reveal reveal-delay-2">
-        <div class="product-img-wrap">
-          <img
-            src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=800&q=80"
-            alt="Премиум диван"
-            loading="lazy"
-          />
-        </div>
-      </div>
+      <h2 class="disp disp-xl reveal" style="font-size:clamp(38px,4.6vw,62px);line-height:1.08;color:var(--on-dark);margin-bottom:30px;">Качество, которое<br>можно <em>почувствовать</em></h2>
+      <p class="reveal" data-i18n="about.p1" style="font-size:16px;line-height:1.9;color:var(--on-dark-mut);margin-bottom:20px;">Наши диваны и мягкая мебель создаются вручную мастерами с десятилетним опытом. Каждое изделие проходит многоступенчатый контроль качества и собирается из отборных материалов европейского уровня.</p>
+      <p class="reveal" data-i18n="about.p2" style="font-size:16px;line-height:1.9;color:var(--on-dark-mut);margin-bottom:38px;">Широкий выбор тканей, цветов и конфигураций — ваш диван будет создан именно под ваш интерьер и образ жизни.</p>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:16px;">
+        <li class="reveal" data-i18n="about.f1" style="display:flex;align-items:flex-start;gap:16px;font-size:15px;color:var(--on-dark);"><span style="flex-shrink:0;width:22px;height:1px;background:var(--gold);margin-top:11px;"></span>Натуральные и гипоаллергенные ткани</li>
+        <li class="reveal" data-i18n="about.f2" style="display:flex;align-items:flex-start;gap:16px;font-size:15px;color:var(--on-dark);"><span style="flex-shrink:0;width:22px;height:1px;background:var(--gold);margin-top:11px;"></span>Ортопедические наполнители высшего класса</li>
+        <li class="reveal" data-i18n="about.f3" style="display:flex;align-items:flex-start;gap:16px;font-size:15px;color:var(--on-dark);"><span style="flex-shrink:0;width:22px;height:1px;background:var(--gold);margin-top:11px;"></span>Каркас из массива дуба ручной сборки</li>
+        <li class="reveal" data-i18n="about.f4" style="display:flex;align-items:flex-start;gap:16px;font-size:15px;color:var(--on-dark);"><span style="flex-shrink:0;width:22px;height:1px;background:var(--gold);margin-top:11px;"></span>Гарантия 5 лет на каркас и механизмы</li>
+      </ul>
     </div>
-
-    <!-- Feature cards -->
-    <div class="product-cards">
-      <div class="product-card reveal">
-        <div class="card-icon">
-          <svg viewBox="0 0 48 48"><path d="M4 32V20a4 4 0 014-4h32a4 4 0 014 4v12M2 32h44M8 36h32"/><circle cx="12" cy="38" r="3"/><circle cx="36" cy="38" r="3"/></svg>
-        </div>
-        <h3 class="card-title">Диваны</h3>
-        <p class="card-desc">Угловые, прямые, модульные — любая конфигурация для любого пространства.</p>
+    <div class="reveal" style="position:relative;">
+      <div style="position:absolute;inset:-1px;border:1px solid var(--gold-d);transform:translate(18px,18px);z-index:0;pointer-events:none;"></div>
+      <div style="position:relative;z-index:1;overflow:hidden;">
+        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1100&q=80" alt="Интерьер" loading="lazy" style="width:100%;height:560px;object-fit:cover;">
       </div>
-      <div class="product-card reveal reveal-delay-1">
-        <div class="card-icon">
-          <svg viewBox="0 0 48 48"><rect x="6" y="14" width="36" height="24" rx="2"/><path d="M14 14V10a2 2 0 012-2h16a2 2 0 012 2v4M6 38v4M42 38v4"/></svg>
-        </div>
-        <h3 class="card-title">Кресла</h3>
-        <p class="card-desc">Лаунж-кресла, реклайнеры, кресла-качалки. Комфорт в каждой детали.</p>
-      </div>
-      <div class="product-card reveal reveal-delay-2">
-        <div class="card-icon">
-          <svg viewBox="0 0 48 48"><path d="M8 28V16a2 2 0 012-2h28a2 2 0 012 2v12M4 28h40v8H4z"/><path d="M12 36v4M36 36v4"/></svg>
-        </div>
-        <h3 class="card-title">Кровати</h3>
-        <p class="card-desc">Мягкие изголовья, подъёмные механизмы, премиальные материалы обивки.</p>
+      <div style="position:absolute;z-index:2;left:-28px;bottom:44px;background:var(--gold);color:var(--ink);padding:24px 30px;max-width:200px;">
+        <div class="disp" style="font-size:46px;line-height:1;">350+</div>
+        <div data-i18n="about.badge" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;margin-top:8px;font-weight:600;">моделей в каталоге</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ─── GALLERY ─── -->
-<div class="gallery-strip">
-  <div class="gallery-strip-item">
-    <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&q=80" alt="Гостиная" loading="lazy" />
-  </div>
-  <div class="gallery-strip-item">
-    <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=600&q=80" alt="Кресло" loading="lazy" />
-  </div>
-  <div class="gallery-strip-item">
-    <img src="https://images.unsplash.com/photo-1540574163026-643ea20ade25?w=600&q=80" alt="Спальня" loading="lazy" />
-  </div>
-  <div class="gallery-strip-item">
-    <img src="https://images.unsplash.com/photo-1505693314120-0d443867891c?w=600&q=80" alt="Интерьер" loading="lazy" />
-  </div>
-  <div class="gallery-strip-item">
-    <img src="https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=600&q=80" alt="Мебель" loading="lazy" />
+<!-- ===== STATS ===== -->
+<div id="stats" style="background:var(--ink2);border-top:1px solid var(--line-d);border-bottom:1px solid var(--line-d);">
+  <div class="pad-x" style="max-width:1280px;margin:0 auto;padding:64px 48px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:48px;">
+    <div style="text-align:center;flex:1;min-width:160px;">
+      <div class="disp"><span class="counter" data-count="1200" data-suffix="+" style="font-size:60px;color:var(--gold-l);line-height:1;">0</span></div>
+      <div data-i18n="stat.l1" style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--on-dark-mut);margin-top:14px;">Довольных клиентов</div>
+    </div>
+    <div style="text-align:center;flex:1;min-width:160px;">
+      <div class="disp"><span class="counter" data-count="350" data-suffix="+" style="font-size:60px;color:var(--gold-l);line-height:1;">0</span></div>
+      <div data-i18n="stat.l2" style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--on-dark-mut);margin-top:14px;">Моделей мебели</div>
+    </div>
+    <div style="text-align:center;flex:1;min-width:160px;">
+      <div class="disp"><span class="counter" data-count="12" data-suffix="" style="font-size:60px;color:var(--gold-l);line-height:1;">0</span></div>
+      <div data-i18n="stat.l3" style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--on-dark-mut);margin-top:14px;">Лет на рынке</div>
+    </div>
+    <div style="text-align:center;flex:1;min-width:160px;">
+      <div class="disp"><span class="counter" data-count="48" data-suffix="" style="font-size:60px;color:var(--gold-l);line-height:1;">0</span></div>
+      <div data-i18n="stat.l4" style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--on-dark-mut);margin-top:14px;">Часов до доставки</div>
+    </div>
   </div>
 </div>
 
-<!-- ─── FORM ─── -->
-<section id="form-section">
-  <div class="lines-bg"></div>
+<!-- ===== COLLECTION ===== -->
+<section id="collection" style="background:var(--cream);padding:130px 0;">
+  <div class="pad-x" style="max-width:1280px;margin:0 auto;padding:0 48px;">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:24px;margin-bottom:64px;">
+      <div>
+        <div class="reveal" style="display:flex;align-items:center;gap:14px;margin-bottom:22px;">
+          <span style="width:34px;height:1px;background:var(--gold-d);"></span>
+          <span data-i18n="coll.tag" style="font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-d);">Каталог</span>
+        </div>
+        <h2 class="disp disp-xl reveal" style="font-size:clamp(38px,4.6vw,62px);line-height:1.06;color:var(--on-light);">Коллекция для<br>каждой <em>комнаты</em></h2>
+      </div>
+      <p class="reveal" data-i18n="coll.desc" style="font-size:15px;line-height:1.85;color:var(--on-light-mut);max-width:340px;">От угловых диванов до кроватей с мягким изголовьем — всё, чтобы наполнить дом уютом и характером.</p>
+    </div>
+    <div class="collection-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px;">
+      <a href="#contact" class="coll-card reveal" style="text-decoration:none;position:relative;overflow:hidden;aspect-ratio:4/5;display:block;background:var(--warm);">
+        <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=800&q=80" alt="" loading="lazy" class="coll-img" style="width:100%;height:100%;object-fit:cover;">
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(20,17,13,.82) 100%);"></div>
+        <div style="position:absolute;left:26px;right:26px;bottom:26px;">
+          <div class="disp" data-i18n="coll.c1t" style="font-size:30px;color:#fff;">Угловые диваны</div>
+          <div data-i18n="coll.c1d" style="font-size:13px;color:rgba(236,230,218,.78);margin-top:6px;line-height:1.5;">Просторные, модульные, под любую планировку</div>
+        </div>
+      </a>
+      <a href="#contact" class="coll-card reveal" style="text-decoration:none;position:relative;overflow:hidden;aspect-ratio:4/5;display:block;background:var(--warm);">
+        <img src="https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=800&q=80" alt="" loading="lazy" class="coll-img" style="width:100%;height:100%;object-fit:cover;">
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(20,17,13,.82) 100%);"></div>
+        <div style="position:absolute;left:26px;right:26px;bottom:26px;">
+          <div class="disp" data-i18n="coll.c2t" style="font-size:30px;color:#fff;">Прямые диваны</div>
+          <div data-i18n="coll.c2d" style="font-size:13px;color:rgba(236,230,218,.78);margin-top:6px;line-height:1.5;">Классика комфорта для гостиной</div>
+        </div>
+      </a>
+      <a href="#contact" class="coll-card reveal" style="text-decoration:none;position:relative;overflow:hidden;aspect-ratio:4/5;display:block;background:var(--warm);">
+        <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=800&q=80" alt="" loading="lazy" class="coll-img" style="width:100%;height:100%;object-fit:cover;">
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(20,17,13,.82) 100%);"></div>
+        <div style="position:absolute;left:26px;right:26px;bottom:26px;">
+          <div class="disp" data-i18n="coll.c3t" style="font-size:30px;color:#fff;">Кресла</div>
+          <div data-i18n="coll.c3d" style="font-size:13px;color:rgba(236,230,218,.78);margin-top:6px;line-height:1.5;">Лаунж-кресла и реклайнеры</div>
+        </div>
+      </a>
+      <a href="#contact" class="coll-card reveal" style="text-decoration:none;position:relative;overflow:hidden;aspect-ratio:4/5;display:block;background:var(--warm);">
+        <img src="https://images.unsplash.com/photo-1540574163026-643ea20ade25?w=800&q=80" alt="" loading="lazy" class="coll-img" style="width:100%;height:100%;object-fit:cover;">
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(20,17,13,.82) 100%);"></div>
+        <div style="position:absolute;left:26px;right:26px;bottom:26px;">
+          <div class="disp" data-i18n="coll.c4t" style="font-size:30px;color:#fff;">Кровати</div>
+          <div data-i18n="coll.c4d" style="font-size:13px;color:rgba(236,230,218,.78);margin-top:6px;line-height:1.5;">Мягкие изголовья, подъёмные механизмы</div>
+        </div>
+      </a>
+      <a href="#contact" class="coll-card reveal" style="text-decoration:none;position:relative;overflow:hidden;aspect-ratio:4/5;display:block;background:var(--warm);">
+        <img src="https://images.unsplash.com/photo-1505693314120-0d443867891c?w=800&q=80" alt="" loading="lazy" class="coll-img" style="width:100%;height:100%;object-fit:cover;">
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(20,17,13,.82) 100%);"></div>
+        <div style="position:absolute;left:26px;right:26px;bottom:26px;">
+          <div class="disp" data-i18n="coll.c5t" style="font-size:30px;color:#fff;">Модульные системы</div>
+          <div data-i18n="coll.c5d" style="font-size:13px;color:rgba(236,230,218,.78);margin-top:6px;line-height:1.5;">Собирайте мебель как конструктор</div>
+        </div>
+      </a>
+      <a href="#contact" class="coll-card reveal" style="text-decoration:none;position:relative;overflow:hidden;aspect-ratio:4/5;display:block;background:var(--warm);">
+        <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=801&q=80" alt="" loading="lazy" class="coll-img" style="width:100%;height:100%;object-fit:cover;">
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(20,17,13,.82) 100%);"></div>
+        <div style="position:absolute;left:26px;right:26px;bottom:26px;">
+          <div class="disp" data-i18n="coll.c6t" style="font-size:30px;color:#fff;">Пуфы и столики</div>
+          <div data-i18n="coll.c6d" style="font-size:13px;color:rgba(236,230,218,.78);margin-top:6px;line-height:1.5;">Детали, что завершают интерьер</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
 
-  <div class="section-inner">
-    <div class="form-layout">
-      <div class="form-left">
-        <span class="section-tag reveal">Оставьте заявку</span>
-        <h2 class="section-title reveal reveal-delay-1">
-          Подберём мебель<br>специально <em>для вас</em>
-        </h2>
-        <p class="product-desc reveal reveal-delay-2" style="margin-bottom:0;">
-          Заполните форму, и наш менеджер свяжется с вами в течение 1 часа.
-          Мы поможем выбрать идеальный диван под ваш интерьер и бюджет.
-        </p>
+<!-- ===== PROCESS ===== -->
+<section id="process" style="background:var(--ink);padding:130px 0;">
+  <div class="pad-x" style="max-width:1280px;margin:0 auto;padding:0 48px;">
+    <div style="text-align:center;margin-bottom:72px;">
+      <div class="reveal" style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:22px;">
+        <span style="width:34px;height:1px;background:var(--gold);"></span>
+        <span data-i18n="process.tag" style="font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);">Как мы работаем</span>
+        <span style="width:34px;height:1px;background:var(--gold);"></span>
+      </div>
+      <h2 class="disp disp-xl reveal" style="font-size:clamp(38px,4.6vw,62px);line-height:1.06;color:var(--on-dark);">Четыре шага<br>к <em>вашей</em> мебели</h2>
+    </div>
+    <div class="process-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--line-d);border:1px solid var(--line-d);">
+      <div class="reveal" style="background:var(--ink);padding:48px 34px;">
+        <div class="disp" style="font-size:54px;color:var(--gold-d);line-height:1;">01</div>
+        <h3 class="disp" data-i18n="process.s1t" style="font-size:26px;color:var(--on-dark);margin:22px 0 12px;">Консультация</h3>
+        <p data-i18n="process.s1d" style="font-size:14px;line-height:1.75;color:var(--on-dark-mut);">Обсуждаем ваш интерьер, бюджет и пожелания. Дизайнер подбирает решения бесплатно.</p>
+      </div>
+      <div class="reveal" style="background:var(--ink);padding:48px 34px;">
+        <div class="disp" style="font-size:54px;color:var(--gold-d);line-height:1;">02</div>
+        <h3 class="disp" data-i18n="process.s2t" style="font-size:26px;color:var(--on-dark);margin:22px 0 12px;">Дизайн-проект</h3>
+        <p data-i18n="process.s2d" style="font-size:14px;line-height:1.75;color:var(--on-dark-mut);">Согласуем ткани, размеры и конфигурацию. Показываем 3D-визуализацию будущей мебели.</p>
+      </div>
+      <div class="reveal" style="background:var(--ink);padding:48px 34px;">
+        <div class="disp" style="font-size:54px;color:var(--gold-d);line-height:1;">03</div>
+        <h3 class="disp" data-i18n="process.s3t" style="font-size:26px;color:var(--on-dark);margin:22px 0 12px;">Производство</h3>
+        <p data-i18n="process.s3d" style="font-size:14px;line-height:1.75;color:var(--on-dark-mut);">Мастера собирают мебель вручную с контролем качества на каждом этапе.</p>
+      </div>
+      <div class="reveal" style="background:var(--ink);padding:48px 34px;">
+        <div class="disp" style="font-size:54px;color:var(--gold-d);line-height:1;">04</div>
+        <h3 class="disp" data-i18n="process.s4t" style="font-size:26px;color:var(--on-dark);margin:22px 0 12px;">Доставка и сборка</h3>
+        <p data-i18n="process.s4d" style="font-size:14px;line-height:1.75;color:var(--on-dark-mut);">Бесплатно привозим и собираем мебель в любом городе Узбекистана.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-        <div class="form-promise">
-          <div class="promise-item reveal reveal-delay-1">
-            <div class="promise-dot"></div>
-            <div class="promise-text">
-              <strong>Бесплатная консультация</strong>
-              Наш дизайнер подберёт мебель под ваш интерьер абсолютно бесплатно.
-            </div>
-          </div>
-          <div class="promise-item reveal reveal-delay-2">
-            <div class="promise-dot"></div>
-            <div class="promise-text">
-              <strong>Доставка по всему Узбекистану</strong>
-              Доставим и установим мебель в любой город страны.
-            </div>
-          </div>
-          <div class="promise-item reveal reveal-delay-3">
-            <div class="promise-dot"></div>
-            <div class="promise-text">
-              <strong>Оплата частями</strong>
-              Рассрочка до 24 месяцев без переплат и скрытых комиссий.
-            </div>
+<!-- ===== GALLERY ===== -->
+<section id="gallery" style="background:var(--cream2);padding:130px 0;">
+  <div class="pad-x" style="max-width:1280px;margin:0 auto;padding:0 48px;">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:24px;margin-bottom:56px;">
+      <div>
+        <div class="reveal" style="display:flex;align-items:center;gap:14px;margin-bottom:22px;">
+          <span style="width:34px;height:1px;background:var(--gold-d);"></span>
+          <span data-i18n="gallery.tag" style="font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-d);">Наши работы</span>
+        </div>
+        <h2 class="disp disp-xl reveal" style="font-size:clamp(38px,4.6vw,62px);line-height:1.06;color:var(--on-light);">Интерьеры, в которых<br>живёт наша <em>мебель</em></h2>
+      </div>
+    </div>
+    <div class="gallery-grid" style="display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:300px;gap:14px;">
+      <div class="gal reveal" style="grid-column:span 2;grid-row:span 2;overflow:hidden;position:relative;background:var(--warm);">
+        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1000&q=80" alt="" loading="lazy" class="gal-img" style="width:100%;height:100%;object-fit:cover;">
+      </div>
+      <div class="gal reveal" style="overflow:hidden;position:relative;background:var(--warm);">
+        <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=700&q=80" alt="" loading="lazy" class="gal-img" style="width:100%;height:100%;object-fit:cover;">
+      </div>
+      <div class="gal reveal" style="overflow:hidden;position:relative;background:var(--warm);">
+        <img src="https://images.unsplash.com/photo-1540574163026-643ea20ade25?w=700&q=80" alt="" loading="lazy" class="gal-img" style="width:100%;height:100%;object-fit:cover;">
+      </div>
+      <div class="gal reveal" style="overflow:hidden;position:relative;background:var(--warm);">
+        <img src="https://images.unsplash.com/photo-1505693314120-0d443867891c?w=700&q=80" alt="" loading="lazy" class="gal-img" style="width:100%;height:100%;object-fit:cover;">
+      </div>
+      <div class="gal reveal" style="overflow:hidden;position:relative;background:var(--warm);">
+        <img src="https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=700&q=80" alt="" loading="lazy" class="gal-img" style="width:100%;height:100%;object-fit:cover;">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== REVIEWS ===== -->
+<section id="reviews" style="background:var(--ink);padding:130px 0;">
+  <div class="pad-x" style="max-width:1280px;margin:0 auto;padding:0 48px;">
+    <div style="text-align:center;margin-bottom:68px;">
+      <div class="reveal" style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:22px;">
+        <span style="width:34px;height:1px;background:var(--gold);"></span>
+        <span data-i18n="rev.tag" style="font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);">Отзывы клиентов</span>
+        <span style="width:34px;height:1px;background:var(--gold);"></span>
+      </div>
+      <h2 class="disp disp-xl reveal" style="font-size:clamp(38px,4.6vw,62px);line-height:1.06;color:var(--on-dark);">Нам доверяют<br>создавать <em>уют</em></h2>
+    </div>
+    <div class="reviews-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px;">
+      <div class="reveal" style="background:var(--ink2);border:1px solid var(--line-d);padding:42px 36px;">
+        <div class="disp" style="font-size:60px;color:var(--gold-d);line-height:.6;height:30px;">"</div>
+        <p data-i18n="rev.q1" style="font-size:16px;line-height:1.85;color:var(--on-dark);margin-bottom:30px;font-family:var(--serif);font-style:italic;">Заказывали угловой диван — превзошёл ожидания. Качество обивки и сборки на высоте, привезли точно в срок.</p>
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--gold);color:var(--ink);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;">Д</div>
+          <div>
+            <div data-i18n="rev.n1" style="font-size:14px;color:var(--on-dark);font-weight:600;">Дилноза Р.</div>
+            <div data-i18n="rev.r1" style="font-size:12px;color:var(--on-dark-mut);margin-top:2px;">Ташкент</div>
           </div>
         </div>
       </div>
-
-      <div class="form-right reveal reveal-delay-2">
-        <form id="mainForm">
-          <div class="form-row">
-            <div class="field">
-              <label>Ваше имя</label>
-              <input type="text" placeholder="Алишер" required />
-            </div>
-            <div class="field">
-              <label>Телефон</label>
-              <input type="tel" placeholder="+998 90 000 00 00" required />
-            </div>
+      <div class="reveal" style="background:var(--ink2);border:1px solid var(--line-d);padding:42px 36px;">
+        <div class="disp" style="font-size:60px;color:var(--gold-d);line-height:.6;height:30px;">"</div>
+        <p data-i18n="rev.q2" style="font-size:16px;line-height:1.85;color:var(--on-dark);margin-bottom:30px;font-family:var(--serif);font-style:italic;">Дизайнер помог подобрать ткань под наш интерьер. Рассрочка без переплат стала приятным бонусом. Рекомендую!</p>
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--gold);color:var(--ink);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;">А</div>
+          <div>
+            <div data-i18n="rev.n2" style="font-size:14px;color:var(--on-dark);font-weight:600;">Азиз К.</div>
+            <div data-i18n="rev.r2" style="font-size:12px;color:var(--on-dark-mut);margin-top:2px;">Самарканд</div>
           </div>
-
-          <div class="field">
-            <label>Город</label>
-            <select>
-              <option value="">Выберите город</option>
-              <option>Ташкент</option>
-              <option>Самарканд</option>
-              <option>Бухара</option>
-              <option>Наманган</option>
-              <option>Андижан</option>
-              <option>Фергана</option>
-              <option>Другой город</option>
-            </select>
+        </div>
+      </div>
+      <div class="reveal" style="background:var(--ink2);border:1px solid var(--line-d);padding:42px 36px;">
+        <div class="disp" style="font-size:60px;color:var(--gold-d);line-height:.6;height:30px;">"</div>
+        <p data-i18n="rev.q3" style="font-size:16px;line-height:1.85;color:var(--on-dark);margin-bottom:30px;font-family:var(--serif);font-style:italic;">Кровать с мягким изголовьем — мечта. Спустя год выглядит как новая. Спасибо за честный сервис и заботу.</p>
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--gold);color:var(--ink);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;">М</div>
+          <div>
+            <div data-i18n="rev.n3" style="font-size:14px;color:var(--on-dark);font-weight:600;">Малика Ю.</div>
+            <div data-i18n="rev.r3" style="font-size:12px;color:var(--on-dark-mut);margin-top:2px;">Бухара</div>
           </div>
-
-          <div class="field">
-            <label>Тип мебели</label>
-            <select>
-              <option value="">Что вас интересует?</option>
-              <option>Угловой диван</option>
-              <option>Прямой диван</option>
-              <option>Модульный диван</option>
-              <option>Кресло / кресло-кровать</option>
-              <option>Кровать с мягким изголовьем</option>
-              <option>Комплект (диван + кресла)</option>
-              <option>Другое</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label>Бюджет</label>
-            <select>
-              <option value="">Укажите примерный бюджет</option>
-              <option>До 5 млн сум</option>
-              <option>5–10 млн сум</option>
-              <option>10–20 млн сум</option>
-              <option>Более 20 млн сум</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label>Комментарий</label>
-            <textarea placeholder="Расскажите о ваших предпочтениях, цвете интерьера, размерах помещения..."></textarea>
-          </div>
-
-          <div class="form-submit">
-            <button type="submit" class="btn-submit">Отправить заявку</button>
-          </div>
-        </form>
-
-        <div class="form-success" id="formSuccess">
-          <div class="success-icon">
-            <svg width="28" height="28" viewBox="0 0 28 28"><polyline points="4 14 11 21 24 8" stroke-width="2"/></svg>
-          </div>
-          <h3 class="success-title">Заявка отправлена!</h3>
-          <p class="success-text">Наш менеджер свяжется с вами в течение 1 часа.<br>Спасибо, что выбрали MEBEL.STUDIO!</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ─── FOOTER ─── -->
-<footer>
-  <div class="footer-logo">MEBEL<span>.</span>STUDIO</div>
-  <div class="footer-links">
-    <a href="#hero">Главная</a>
-    <a href="#product">Коллекция</a>
-    <a href="#form-section">Заявка</a>
+<!-- ===== CONTACT / FORM ===== -->
+<section id="contact" style="background:var(--cream);padding:130px 0;">
+  <div class="pad-x contact-grid" style="max-width:1280px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start;">
+    <div>
+      <div class="reveal" style="display:flex;align-items:center;gap:14px;margin-bottom:24px;">
+        <span style="width:34px;height:1px;background:var(--gold-d);"></span>
+        <span data-i18n="contact.tag" style="font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-d);">Оставьте заявку</span>
+      </div>
+      <h2 class="disp disp-xl reveal" style="font-size:clamp(38px,4.6vw,58px);line-height:1.06;color:var(--on-light);margin-bottom:24px;">Подберём мебель<br>специально <em>для вас</em></h2>
+      <p class="reveal" data-i18n="contact.desc" style="font-size:16px;line-height:1.85;color:var(--on-light-mut);margin-bottom:44px;max-width:440px;">Заполните форму — менеджер свяжется с вами в течение часа, поможет выбрать идеальный диван под ваш интерьер и бюджет.</p>
+
+      <div style="display:flex;flex-direction:column;gap:2px;border:1px solid var(--line-l);">
+        <div class="reveal" style="display:flex;align-items:center;gap:18px;padding:22px 24px;border-bottom:1px solid var(--line-l);">
+          <span style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-d);width:90px;flex-shrink:0;" data-i18n="contact.k1">Телефон</span>
+          <a href="tel:+998712007070" style="font-family:var(--serif);font-size:24px;color:var(--on-light);text-decoration:none;">+998 71 200 70 70</a>
+        </div>
+        <div class="reveal" style="display:flex;align-items:center;gap:18px;padding:22px 24px;border-bottom:1px solid var(--line-l);">
+          <span style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-d);width:90px;flex-shrink:0;" data-i18n="contact.k2">Адрес</span>
+          <span data-i18n="contact.addr" style="font-size:15px;color:var(--on-light);">г. Ташкент, ул. Амира Темура, 15 — шоурум</span>
+        </div>
+        <div class="reveal" style="display:flex;align-items:center;gap:18px;padding:22px 24px;">
+          <span style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-d);width:90px;flex-shrink:0;" data-i18n="contact.k3">Часы</span>
+          <span data-i18n="contact.hours" style="font-size:15px;color:var(--on-light);">Ежедневно 10:00 — 20:00</span>
+        </div>
+      </div>
+
+      <div class="reveal" style="margin-top:18px;overflow:hidden;border:1px solid var(--line-l);">
+        <iframe src="https://maps.google.com/maps?q=Tashkent+Amir+Temur+street&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height="220" style="border:0;display:block;filter:grayscale(.4) sepia(.15);" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <form id="leadForm" style="display:flex;flex-direction:column;gap:20px;background:var(--cream2);border:1px solid var(--line-l);padding:40px;">
+        <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div style="display:flex;flex-direction:column;gap:9px;">
+            <label data-i18n="form.name" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-d);">Ваше имя</label>
+            <input id="f-name" type="text" required placeholder="Алишер" data-i18n-ph="ph.name" style="background:#fff;border:1px solid var(--line-l);border-radius:2px;padding:14px 16px;font-size:15px;font-family:var(--sans);color:var(--on-light);outline:none;transition:border-color .3s;width:100%;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--line-l)'">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:9px;">
+            <label data-i18n="form.phone" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-d);">Телефон</label>
+            <input id="f-phone" type="tel" required placeholder="+998 90 000 00 00" data-i18n-ph="ph.phone" style="background:#fff;border:1px solid var(--line-l);border-radius:2px;padding:14px 16px;font-size:15px;font-family:var(--sans);color:var(--on-light);outline:none;transition:border-color .3s;width:100%;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--line-l)'">
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <label data-i18n="form.city" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-d);">Город</label>
+          <select id="f-city" style="background:#fff;border:1px solid var(--line-l);border-radius:2px;padding:14px 16px;font-size:15px;font-family:var(--sans);color:var(--on-light);outline:none;cursor:pointer;width:100%;appearance:none;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239c7d4e' stroke-width='1.5' fill='none'/%3E%3C/svg%3E&quot;);background-repeat:no-repeat;background-position:right 16px center;">
+            <option value="" data-i18n="opt.city0">Выберите город</option>
+            <option data-i18n="opt.city1">Ташкент</option>
+            <option data-i18n="opt.city2">Самарканд</option>
+            <option data-i18n="opt.city3">Бухара</option>
+            <option data-i18n="opt.city4">Наманган</option>
+            <option data-i18n="opt.city5">Андижан</option>
+            <option data-i18n="opt.city6">Фергана</option>
+            <option data-i18n="opt.city7">Другой город</option>
+          </select>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <label data-i18n="form.type" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-d);">Тип мебели</label>
+          <select id="f-type" style="background:#fff;border:1px solid var(--line-l);border-radius:2px;padding:14px 16px;font-size:15px;font-family:var(--sans);color:var(--on-light);outline:none;cursor:pointer;width:100%;appearance:none;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239c7d4e' stroke-width='1.5' fill='none'/%3E%3C/svg%3E&quot;);background-repeat:no-repeat;background-position:right 16px center;">
+            <option value="" data-i18n="opt.type0">Что вас интересует?</option>
+            <option data-i18n="opt.type1">Угловой диван</option>
+            <option data-i18n="opt.type2">Прямой диван</option>
+            <option data-i18n="opt.type3">Модульный диван</option>
+            <option data-i18n="opt.type4">Кресло / кресло-кровать</option>
+            <option data-i18n="opt.type5">Кровать с мягким изголовьем</option>
+            <option data-i18n="opt.type6">Комплект (диван + кресла)</option>
+            <option data-i18n="opt.type7">Другое</option>
+          </select>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <label data-i18n="form.budget" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-d);">Бюджет</label>
+          <select id="f-budget" style="background:#fff;border:1px solid var(--line-l);border-radius:2px;padding:14px 16px;font-size:15px;font-family:var(--sans);color:var(--on-light);outline:none;cursor:pointer;width:100%;appearance:none;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239c7d4e' stroke-width='1.5' fill='none'/%3E%3C/svg%3E&quot;);background-repeat:no-repeat;background-position:right 16px center;">
+            <option value="" data-i18n="opt.budget0">Укажите бюджет</option>
+            <option data-i18n="opt.budget1">До 5 млн сум</option>
+            <option data-i18n="opt.budget2">5–10 млн сум</option>
+            <option data-i18n="opt.budget3">10–20 млн сум</option>
+            <option data-i18n="opt.budget4">Более 20 млн сум</option>
+          </select>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <label data-i18n="form.comment" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-d);">Комментарий</label>
+          <textarea id="f-comment" placeholder="Расскажите о предпочтениях, цвете интерьера, размерах помещения..." data-i18n-ph="ph.comment" style="background:#fff;border:1px solid var(--line-l);border-radius:2px;padding:14px 16px;font-size:15px;font-family:var(--sans);color:var(--on-light);outline:none;min-height:110px;resize:vertical;width:100%;transition:border-color .3s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--line-l)'"></textarea>
+        </div>
+        <button id="submitBtn" type="submit" style="margin-top:6px;width:100%;padding:18px;background:var(--ink);color:#fff;border:none;border-radius:2px;font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:background .3s,box-shadow .3s;" onmouseover="this.style.background='var(--gold-d)';this.style.boxShadow='0 14px 40px rgba(20,17,13,.25)'" onmouseout="this.style.background='var(--ink)';this.style.boxShadow='none'"><span data-i18n="form.submit">Отправить заявку</span></button>
+        <p id="formError" data-i18n="form.error" style="display:none;font-size:13px;color:#b4452f;text-align:center;">Не удалось отправить. Попробуйте ещё раз или позвоните нам.</p>
+      </form>
+      <div id="formSuccess" style="display:none;text-align:center;padding:64px 40px;background:var(--cream2);border:1px solid var(--line-l);">
+        <div style="width:66px;height:66px;border:1px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 26px;">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><polyline points="5 14 11 20 23 8" stroke="#c2a06a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3 class="disp" data-i18n="success.title" style="font-size:34px;color:var(--on-light);margin-bottom:12px;">Заявка отправлена!</h3>
+        <p data-i18n="success.text" style="font-size:15px;color:var(--on-light-mut);line-height:1.7;">Менеджер свяжется с вами в течение часа.<br>Спасибо, что выбрали MEBEL.STUDIO.</p>
+      </div>
+    </div>
   </div>
-  <div class="footer-copy">© 2024 MEBEL STUDIO. Все права защищены.</div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer style="background:var(--ink2);border-top:1px solid var(--line-d);padding:72px 0 36px;">
+  <div class="pad-x" style="max-width:1280px;margin:0 auto;padding:0 48px;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:40px;padding-bottom:48px;border-bottom:1px solid var(--line-d);">
+      <div style="max-width:300px;">
+        <div style="font-weight:700;font-size:18px;letter-spacing:.34em;color:var(--on-dark);text-transform:uppercase;margin-bottom:18px;">MEBEL<span style="color:var(--gold);">.</span>STUDIO</div>
+        <p data-i18n="footer.tagline" style="font-size:14px;line-height:1.8;color:var(--on-dark-mut);">Премиальная мебель ручной работы для вашего дома. Создаём уют с 2012 года.</p>
+      </div>
+      <div style="display:flex;gap:64px;flex-wrap:wrap;">
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div data-i18n="footer.h1" style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;">Навигация</div>
+          <a href="#collection" data-i18n="nav.collection" style="text-decoration:none;font-size:14px;color:var(--on-dark-mut);transition:color .3s;" onmouseover="this.style.color='var(--on-dark)'" onmouseout="this.style.color='var(--on-dark-mut)'">Коллекция</a>
+          <a href="#process" data-i18n="nav.process" style="text-decoration:none;font-size:14px;color:var(--on-dark-mut);transition:color .3s;" onmouseover="this.style.color='var(--on-dark)'" onmouseout="this.style.color='var(--on-dark-mut)'">Процесс</a>
+          <a href="#gallery" data-i18n="nav.gallery" style="text-decoration:none;font-size:14px;color:var(--on-dark-mut);transition:color .3s;" onmouseover="this.style.color='var(--on-dark)'" onmouseout="this.style.color='var(--on-dark-mut)'">Галерея</a>
+          <a href="#reviews" data-i18n="nav.reviews" style="text-decoration:none;font-size:14px;color:var(--on-dark-mut);transition:color .3s;" onmouseover="this.style.color='var(--on-dark)'" onmouseout="this.style.color='var(--on-dark-mut)'">Отзывы</a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div data-i18n="footer.h2" style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;">Контакты</div>
+          <a href="tel:+998712007070" style="text-decoration:none;font-size:14px;color:var(--on-dark-mut);transition:color .3s;" onmouseover="this.style.color='var(--on-dark)'" onmouseout="this.style.color='var(--on-dark-mut)'">+998 71 200 70 70</a>
+          <a href="https://t.me/" target="_blank" rel="noopener" style="text-decoration:none;font-size:14px;color:var(--on-dark-mut);transition:color .3s;" onmouseover="this.style.color='var(--on-dark)'" onmouseout="this.style.color='var(--on-dark-mut)'">Telegram</a>
+          <a href="https://instagram.com/" target="_blank" rel="noopener" style="text-decoration:none;font-size:14px;color:var(--on-dark-mut);transition:color .3s;" onmouseover="this.style.color='var(--on-dark)'" onmouseout="this.style.color='var(--on-dark-mut)'">Instagram</a>
+          <span data-i18n="contact.hours" style="font-size:14px;color:var(--on-dark-mut);">Ежедневно 10:00 — 20:00</span>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;padding-top:28px;">
+      <span data-i18n="footer.copy" style="font-size:12px;color:rgba(168,158,140,.6);">© 2026 MEBEL.STUDIO. Все права защищены.</span>
+      <span data-i18n="footer.made" style="font-size:12px;color:rgba(168,158,140,.6);">Ташкент · Узбекистан</span>
+    </div>
+  </div>
 </footer>
 
 <script>
-  // ─── NAV scroll ───
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 60);
-  }, { passive: true });
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => Array.from(document.querySelectorAll(s));
 
-  // ─── Parallax ───
-  const gridBg    = document.getElementById('gridBg');
-  const blob1     = document.getElementById('blob1');
-  const blob2     = document.getElementById('blob2');
-  const blob3     = document.getElementById('blob3');
-  const heroImg   = document.getElementById('heroImg');
-  const orb1      = document.getElementById('orb1');
-  const orb2      = document.getElementById('orb2');
+// Telegram config (fill in to receive leads)
+const BOT_TOKEN = "";
+const CHAT_ID = "";
 
-  let ticking = false;
+// ── NAV scroll ──
+const nav = $("#nav");
+const onNavScroll = () => {
+  const s = window.scrollY > 40;
+  nav.style.background = s ? "rgba(20,17,13,.88)" : "transparent";
+  nav.style.backdropFilter = s ? "blur(14px)" : "none";
+  nav.style.webkitBackdropFilter = s ? "blur(14px)" : "none";
+  nav.style.padding = s ? "16px 48px" : "26px 48px";
+  nav.style.borderBottomColor = s ? "var(--line-d)" : "transparent";
+  nav.style.boxShadow = s ? "0 12px 40px rgba(0,0,0,.32)" : "none";
+};
+window.addEventListener("scroll", onNavScroll, { passive: true });
+onNavScroll();
 
-  function onScroll() {
-    if (!ticking) {
-      requestAnimationFrame(updateParallax);
-      ticking = true;
+// ── Hero entrance animations ──
+$$(".hero-anim").forEach((el, i) => {
+  el.style.animation = `riseIn .85s cubic-bezier(.2,.7,.2,1) ${(0.05 + i * 0.1).toFixed(2)}s both`;
+});
+
+// ── Video autoplay fallback + mouse parallax ──
+const vid = $("#heroVideo");
+if (vid) {
+  const tryPlay = () => { const p = vid.play(); if (p && p.catch) p.catch(() => {}); };
+  tryPlay();
+  vid.addEventListener("canplay", tryPlay, { once: true });
+  window.addEventListener("pointerdown", tryPlay, { once: true });
+
+  const hero = $("#hero");
+  if (hero) {
+    hero.addEventListener("mousemove", (e) => {
+      const dx = (e.clientX / window.innerWidth - 0.5);
+      const dy = (e.clientY / window.innerHeight - 0.5);
+      vid.style.transform = `scale(1.12) translate(${dx * -18}px,${dy * -18}px)`;
+    });
+    hero.addEventListener("mouseleave", () => { vid.style.transform = ""; });
+  }
+}
+
+// ── Reveal on scroll ──
+const revObs = new IntersectionObserver((entries) => {
+  entries.forEach((en) => {
+    if (en.isIntersecting) {
+      en.target.style.animation = "riseIn .85s cubic-bezier(.2,.7,.2,1) both";
+      revObs.unobserve(en.target);
     }
-  }
-
-  function updateParallax() {
-    const sy = window.scrollY;
-
-    // Hero parallax
-    gridBg.style.transform   = `translateY(${sy * 0.3}px)`;
-    blob1.style.transform    = `translateY(${sy * -0.2}px) rotate(${sy * 0.02}deg)`;
-    blob2.style.transform    = `translateY(${sy * 0.15}px)`;
-    blob3.style.transform    = `translateY(${sy * -0.1}px)`;
-    heroImg.style.transform  = `translateY(${sy * 0.25}px)`;
-
-    // Product section parallax
-    const prodY = sy - document.getElementById('product').offsetTop;
-    if (orb1) orb1.style.transform = `translateY(${prodY * -0.1}px)`;
-    if (orb2) orb2.style.transform = `translateY(${prodY * 0.08}px)`;
-
-    ticking = false;
-  }
-
-  window.addEventListener('scroll', onScroll, { passive: true });
-
-  // ─── Mouse parallax on hero ───
-  document.getElementById('hero').addEventListener('mousemove', (e) => {
-    const { clientX: x, clientY: y } = e;
-    const cx = window.innerWidth / 2;
-    const cy = window.innerHeight / 2;
-    const dx = (x - cx) / cx;
-    const dy = (y - cy) / cy;
-
-    blob1.style.transform = `translate(${dx * 20}px, ${dy * 15}px)`;
-    blob2.style.transform = `translate(${dx * -15}px, ${dy * 10}px)`;
-    blob3.style.transform = `translate(${dx * 30}px, ${dy * 25}px)`;
   });
+}, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+$$(".reveal").forEach((el) => revObs.observe(el));
 
-  document.getElementById('hero').addEventListener('mouseleave', () => {
-    blob1.style.transform = '';
-    blob2.style.transform = '';
-    blob3.style.transform = '';
+// ── Stat counters ──
+let counted = false;
+const statsEl = $("#stats");
+if (statsEl) {
+  new IntersectionObserver((entries) => {
+    if (!entries[0].isIntersecting || counted) return;
+    counted = true;
+    $$(".counter").forEach((el) => {
+      const target = +el.dataset.count;
+      const suffix = el.dataset.suffix || "";
+      const dur = 1700;
+      const t0 = performance.now();
+      const tick = (t) => {
+        const p = Math.min((t - t0) / dur, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.floor(eased * target) + (p >= 1 ? suffix : "");
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
+  }, { threshold: 0.4 }).observe(statsEl);
+}
+
+// ── Language toggle ──
+const EN = {
+  "nav.collection":"Collection","nav.process":"Process","nav.gallery":"Gallery","nav.reviews":"Reviews","nav.contact":"Contact","nav.cta":"Request a quote",
+  "hero.tag":"Premium furniture · Tashkent",
+  "hero.title":"Furniture that<br>becomes the <em>heart</em><br>of your home",
+  "hero.desc":"We craft handmade sofas and upholstered furniture from premium European-grade materials. Every piece is built to serve flawlessly for decades.",
+  "hero.btn1":"Explore collection","hero.btn2":"Book a consultation","hero.scroll":"Scroll",
+  "hero.m1":"years on the market","hero.m2":"clients","hero.m3":"years warranty",
+  "marquee":"Free delivery across Uzbekistan&nbsp;&nbsp;·&nbsp;&nbsp;0% installments&nbsp;&nbsp;·&nbsp;&nbsp;5-year warranty&nbsp;&nbsp;·&nbsp;&nbsp;Custom design&nbsp;&nbsp;·&nbsp;&nbsp;Solid oak frame&nbsp;&nbsp;·&nbsp;&nbsp;",
+  "about.tag":"About our furniture",
+  "about.p1":"Our sofas and upholstered furniture are handcrafted by masters with decades of experience. Every piece passes multi-stage quality control and is built from premium European-grade materials.",
+  "about.p2":"A wide choice of fabrics, colours and configurations — your sofa will be created precisely for your interior and your way of living.",
+  "about.f1":"Natural, hypoallergenic fabrics","about.f2":"Top-grade orthopaedic fillings","about.f3":"Hand-built solid oak frame","about.f4":"5-year warranty on frame and mechanisms",
+  "about.badge":"models in the catalogue",
+  "stat.l1":"Happy clients","stat.l2":"Furniture models","stat.l3":"Years on the market","stat.l4":"Hours to delivery",
+  "coll.tag":"Catalogue","coll.desc":"From corner sofas to beds with soft headboards — everything to fill your home with comfort and character.",
+  "coll.c1t":"Corner sofas","coll.c1d":"Spacious, modular, for any layout",
+  "coll.c2t":"Straight sofas","coll.c2d":"Timeless comfort for the living room",
+  "coll.c3t":"Armchairs","coll.c3d":"Lounge chairs and recliners",
+  "coll.c4t":"Beds","coll.c4d":"Soft headboards, lift mechanisms",
+  "coll.c5t":"Modular systems","coll.c5d":"Assemble furniture like building blocks",
+  "coll.c6t":"Poufs & tables","coll.c6d":"The details that complete an interior",
+  "process.tag":"How we work",
+  "process.s1t":"Consultation","process.s1d":"We discuss your interior, budget and wishes. Our designer suggests solutions for free.",
+  "process.s2t":"Design project","process.s2d":"We agree on fabrics, sizes and configuration, and show a 3D visualisation.",
+  "process.s3t":"Production","process.s3d":"Our masters assemble the furniture by hand with quality control at every stage.",
+  "process.s4t":"Delivery & assembly","process.s4d":"We deliver and assemble your furniture for free in any city of Uzbekistan.",
+  "gallery.tag":"Our work",
+  "rev.tag":"Client reviews",
+  "rev.q1":"We ordered a corner sofa — it exceeded our expectations. The quality is superb, and it arrived right on time.",
+  "rev.n1":"Dilnoza R.","rev.r1":"Tashkent",
+  "rev.q2":"The designer helped pick a fabric that matched our interior. Interest-free installments were a pleasant bonus!",
+  "rev.n2":"Aziz K.","rev.r2":"Samarkand",
+  "rev.q3":"The bed with the soft headboard is a dream. A year on, it still looks brand new. Thank you!",
+  "rev.n3":"Malika Yu.","rev.r3":"Bukhara",
+  "contact.tag":"Leave a request",
+  "contact.desc":"Fill in the form — our manager will contact you within an hour and help you choose the perfect sofa.",
+  "contact.k1":"Phone","contact.k2":"Address","contact.k3":"Hours",
+  "contact.addr":"15 Amir Temur St, Tashkent — showroom","contact.hours":"Daily 10:00 — 20:00",
+  "form.name":"Your name","form.phone":"Phone","form.city":"City","form.type":"Furniture type","form.budget":"Budget","form.comment":"Comment","form.submit":"Send request",
+  "form.error":"Could not send. Please try again or call us.",
+  "opt.city0":"Select your city","opt.city1":"Tashkent","opt.city2":"Samarkand","opt.city3":"Bukhara","opt.city4":"Namangan","opt.city5":"Andijan","opt.city6":"Fergana","opt.city7":"Other city",
+  "opt.type0":"What are you interested in?","opt.type1":"Corner sofa","opt.type2":"Straight sofa","opt.type3":"Modular sofa","opt.type4":"Armchair / sofa-bed","opt.type5":"Bed with soft headboard","opt.type6":"Set (sofa + armchairs)","opt.type7":"Other",
+  "opt.budget0":"Select your budget","opt.budget1":"Up to 5M UZS","opt.budget2":"5–10M UZS","opt.budget3":"10–20M UZS","opt.budget4":"Over 20M UZS",
+  "success.title":"Request sent!","success.text":"Our manager will contact you within an hour.<br>Thank you for choosing MEBEL.STUDIO.",
+  "footer.tagline":"Premium handmade furniture for your home. Creating comfort since 2012.",
+  "footer.h1":"Navigation","footer.h2":"Contacts",
+  "footer.copy":"© 2026 MEBEL.STUDIO. All rights reserved.","footer.made":"Tashkent · Uzbekistan"
+};
+const EN_PH = {
+  "ph.name":"Alisher","ph.phone":"+998 90 000 00 00","ph.comment":"Tell us about your preferences, interior colours, room dimensions..."
+};
+
+$$("[data-i18n]").forEach((el) => { el.dataset.ru = el.innerHTML; });
+$$("[data-i18n-ph]").forEach((el) => { el.dataset.phRu = el.getAttribute("placeholder") || ""; });
+
+let lang = "ru";
+const langBtn = $("#langBtn");
+const setLang = (l) => {
+  lang = l;
+  $$("[data-i18n]").forEach((el) => {
+    const k = el.dataset.i18n;
+    el.innerHTML = l === "en" ? (EN[k] != null ? EN[k] : el.dataset.ru) : el.dataset.ru;
   });
+  $$("[data-i18n-ph]").forEach((el) => {
+    const k = el.dataset.i18nPh;
+    el.setAttribute("placeholder", l === "en" ? (EN_PH[k] != null ? EN_PH[k] : el.dataset.phRu) : el.dataset.phRu);
+  });
+  if (langBtn) langBtn.textContent = l === "en" ? "RU" : "EN";
+  document.documentElement.lang = l;
+};
+if (langBtn) langBtn.addEventListener("click", () => setLang(lang === "ru" ? "en" : "ru"));
 
-  // ─── Reveal on scroll ───
-  const reveals = document.querySelectorAll('.reveal');
+// ── Form submit ──
+const form = $("#leadForm");
+const submitBtn = $("#submitBtn");
+const errEl = $("#formError");
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        observer.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.12 });
-
-  reveals.forEach(el => observer.observe(el));
-
-  // ─── Stats: slide in from left + count up ───
-  const statItems = document.querySelectorAll('.stat-item');
-
-  const statsObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-
-      const items = entry.target.parentElement.querySelectorAll('.stat-item');
-      items.forEach((item, i) => {
-        setTimeout(() => {
-          item.classList.add('slide-in');
-
-          const numEl = item.querySelector('.stat-num[data-count]');
-          if (!numEl || numEl.dataset.animated) return;
-          numEl.dataset.animated = '1';
-
-          const target = +numEl.dataset.count;
-          const duration = 1600;
-          const step = target / (duration / 16);
-          let current = 0;
-          const timer = setInterval(() => {
-            current = Math.min(current + step, target);
-            numEl.textContent = Math.floor(current) + (target >= 100 ? '+' : '');
-            if (current >= target) clearInterval(timer);
-          }, 16);
-        }, i * 150);
-      });
-
-      statsObserver.disconnect();
-    });
-  }, { threshold: 0.3 });
-
-  if (statItems.length) statsObserver.observe(statItems[0]);
-
-  // ─── Form submit ───
-  document.getElementById('mainForm').addEventListener('submit', (e) => {
+if (form) {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const btn = e.target.querySelector('.btn-submit');
-    btn.textContent = 'Отправляем...';
-    btn.disabled = true;
-    setTimeout(() => {
-      document.getElementById('mainForm').style.display = 'none';
-      document.getElementById('formSuccess').classList.add('show');
-    }, 1200);
+    const name = $("#f-name").value.trim();
+    const phone = $("#f-phone").value.trim();
+    const city = $("#f-city").value;
+    const type = $("#f-type").value;
+    const budget = $("#f-budget").value;
+    const comment = $("#f-comment").value.trim();
+    if (!name || !phone) return;
+
+    errEl.style.display = "none";
+    const labelSpan = submitBtn.querySelector("span");
+    const original = labelSpan ? labelSpan.innerHTML : "";
+    if (labelSpan) labelSpan.textContent = lang === "en" ? "Sending..." : "Отправляем...";
+    submitBtn.disabled = true;
+    submitBtn.style.opacity = "0.7";
+
+    const text =
+      "🛋 <b>Новая заявка — MEBEL.STUDIO</b>\n\n" +
+      "👤 Имя: " + name + "\n" +
+      "📞 Телефон: " + phone + "\n" +
+      (city ? "📍 Город: " + city + "\n" : "") +
+      (type ? "🪑 Тип: " + type + "\n" : "") +
+      (budget ? "💰 Бюджет: " + budget + "\n" : "") +
+      (comment ? "📝 Комментарий: " + comment : "");
+
+    try {
+      if (BOT_TOKEN && CHAT_ID) {
+        const res = await fetch("https://api.telegram.org/bot" + BOT_TOKEN + "/sendMessage", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ chat_id: CHAT_ID, text, parse_mode: "HTML" })
+        });
+        if (!res.ok) throw new Error("tg");
+      } else {
+        await new Promise((r) => setTimeout(r, 1100));
+      }
+      form.style.display = "none";
+      $("#formSuccess").style.display = "block";
+    } catch {
+      errEl.style.display = "block";
+      submitBtn.disabled = false;
+      submitBtn.style.opacity = "1";
+      if (labelSpan) labelSpan.innerHTML = original;
+    }
   });
+}
 </script>
 </body>
 </html>
