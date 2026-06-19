@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MEBEL STUDIO — Мебель для Вашего дома</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:    #faf8f5;
+      --milk:     #f5f0e8;
+      --warm:     #ede8df;
+      --accent:   #c8a97e;
+      --accent2:  #8b6f47;
+      --dark:     #2c2416;
+      --text:     #4a3f30;
+      --light:    #fff9f2;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: var(--cream);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ─── SCROLLBAR ─── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--milk); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 24px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.4s, box-shadow 0.4s, padding 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(250,248,245,0.96);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 1px 30px rgba(44,36,22,0.08);
+      padding: 16px 60px;
+    }
+    .nav-logo {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--dark);
+      text-transform: uppercase;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text);
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      position: relative;
+      transition: color 0.3s;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 1px;
+      background: var(--accent);
+      transition: width 0.3s;
+    }
+    .nav-links a:hover { color: var(--accent2); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* ─── HERO ─── */
+    #hero {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      background: var(--cream);
+    }
+
+    /* Floating blobs */
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.5;
+      will-change: transform;
+      pointer-events: none;
+    }
+    .blob-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, #e8d5b8 0%, #f5e6cc 100%);
+      top: -150px; right: -100px;
+    }
+    .blob-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, #d4c4a8 0%, #e8dcc8 100%);
+      bottom: 0; left: -80px;
+    }
+    .blob-3 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, #c8a97e44 0%, transparent 100%);
+      top: 40%; left: 40%;
+    }
+
+    /* Grid lines background */
+    .grid-bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(200,169,126,0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200,169,126,0.07) 1px, transparent 1px);
+      background-size: 60px 60px;
+      will-change: transform;
+    }
+
+    /* Floating furniture shapes */
+    .shape {
+      position: absolute;
+      opacity: 0.06;
+      will-change: transform;
+    }
+    .shape svg { fill: var(--accent2); }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 60px;
+      max-width: 700px;
+    }
+    .hero-tag {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s 0.3s forwards;
+    }
+    .hero-title {
+      font-size: clamp(42px, 6vw, 88px);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--dark);
+      margin-bottom: 28px;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 0.9s 0.5s forwards;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .hero-desc {
+      font-size: 17px;
+      line-height: 1.8;
+      color: var(--text);
+      max-width: 480px;
+      margin-bottom: 48px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s 0.7s forwards;
+    }
+    .hero-btns {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s 0.9s forwards;
+    }
+    .btn-primary {
+      padding: 16px 40px;
+      background: var(--accent2);
+      color: #fff;
+      border: none;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+    }
+    .btn-primary:hover {
+      background: var(--dark);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(44,36,22,0.25);
+    }
+    .btn-outline {
+      padding: 16px 40px;
+      background: transparent;
+      color: var(--dark);
+      border: 1px solid var(--dark);
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.3s, color 0.3s, transform 0.2s;
+    }
+    .btn-outline:hover {
+      background: var(--dark);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    /* Hero image side */
+    .hero-image {
+      position: absolute;
+      right: 0; top: 0;
+      width: 50%;
+      height: 100%;
+      overflow: hidden;
+      opacity: 0;
+      animation: fadeIn 1.2s 1s forwards;
+    }
+    .hero-image-inner {
+      width: 100%;
+      height: 120%;
+      background:
+        linear-gradient(135deg, rgba(250,248,245,0.4) 0%, transparent 50%),
+        url('https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&q=80') center/cover no-repeat;
+      will-change: transform;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, var(--cream) 0%, transparent 40%);
+    }
+
+    /* Scroll indicator */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px; left: 60px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      opacity: 0;
+      animation: fadeIn 1s 1.5s forwards;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 60px;
+      background: var(--accent);
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+    .scroll-text {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      writing-mode: vertical-lr;
+    }
+
+    /* ─── SECTION BASE ─── */
+    section { position: relative; overflow: hidden; }
+
+    .section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 60px;
+    }
+
+    .section-tag {
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+      display: block;
+    }
+    .section-title {
+      font-size: clamp(32px, 4vw, 56px);
+      font-weight: 300;
+      color: var(--dark);
+      line-height: 1.2;
+      margin-bottom: 24px;
+    }
+    .section-title em { font-style: italic; color: var(--accent); }
+
+    /* ─── STATS BAR ─── */
+    .stats-bar {
+      background: var(--dark);
+      padding: 40px 60px;
+      display: flex;
+      justify-content: center;
+      gap: 80px;
+      flex-wrap: wrap;
+    }
+    .stat-item { text-align: center; }
+    .stat-num {
+      font-size: 42px;
+      font-weight: 300;
+      color: var(--accent);
+      display: block;
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-top: 8px;
+      display: block;
+    }
+
+    /* ─── ABOUT / PRODUCT ─── */
+    #product {
+      padding: 120px 0;
+      background: var(--light);
+    }
+
+    /* Parallax orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      will-change: transform;
+      pointer-events: none;
+    }
+    .orb-1 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(200,169,126,0.12) 0%, transparent 70%);
+      top: -100px; right: -100px;
+    }
+    .orb-2 {
+      width: 350px; height: 350px;
+      background: radial-gradient(circle, rgba(200,169,126,0.08) 0%, transparent 70%);
+      bottom: 0; left: 0;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      margin-bottom: 80px;
+    }
+    .product-text {}
+    .product-desc {
+      font-size: 16px;
+      line-height: 1.9;
+      color: var(--text);
+      margin-bottom: 40px;
+    }
+    .features-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .features-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      font-size: 15px;
+      color: var(--text);
+    }
+    .features-list li::before {
+      content: '';
+      flex-shrink: 0;
+      width: 20px; height: 1px;
+      background: var(--accent);
+      margin-top: 11px;
+    }
+
+    .product-visual {
+      position: relative;
+    }
+    .product-img-wrap {
+      position: relative;
+      overflow: hidden;
+    }
+    .product-img-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border: 1px solid var(--accent);
+      z-index: 1;
+      transform: translate(12px, 12px);
+      transition: transform 0.4s;
+    }
+    .product-img-wrap:hover::before {
+      transform: translate(6px, 6px);
+    }
+    .product-img-wrap img {
+      width: 100%;
+      height: 500px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s;
+    }
+    .product-img-wrap:hover img {
+      transform: scale(1.04);
+    }
+
+    /* Cards */
+    .product-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+    .product-card {
+      background: var(--warm);
+      padding: 48px 36px;
+      transition: background 0.3s, transform 0.3s;
+      cursor: default;
+    }
+    .product-card:hover {
+      background: var(--dark);
+      transform: translateY(-4px);
+    }
+    .product-card:hover .card-title,
+    .product-card:hover .card-desc { color: #fff; }
+    .card-icon {
+      width: 48px; height: 48px;
+      margin-bottom: 28px;
+      opacity: 0.5;
+      transition: opacity 0.3s;
+    }
+    .product-card:hover .card-icon { opacity: 1; }
+    .card-icon svg { width: 100%; height: 100%; stroke: var(--accent); fill: none; stroke-width: 1.5; }
+    .card-title {
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--dark);
+      margin-bottom: 12px;
+      transition: color 0.3s;
+    }
+    .card-desc {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text);
+      transition: color 0.3s;
+    }
+
+    /* ─── GALLERY STRIP ─── */
+    .gallery-strip {
+      display: flex;
+      gap: 2px;
+      overflow: hidden;
+      height: 320px;
+      background: var(--warm);
+    }
+    .gallery-strip-item {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+    }
+    .gallery-strip-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s;
+    }
+    .gallery-strip-item:hover img { transform: scale(1.08); }
+    .gallery-strip-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(44,36,22,0);
+      transition: background 0.3s;
+    }
+    .gallery-strip-item:hover::after {
+      background: rgba(44,36,22,0.15);
+    }
+
+    /* ─── FORM SECTION ─── */
+    #form-section {
+      padding: 120px 0;
+      background: var(--cream);
+      position: relative;
+    }
+
+    /* Animated lines */
+    .lines-bg {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .lines-bg::before,
+    .lines-bg::after {
+      content: '';
+      position: absolute;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(200,169,126,0.3), transparent);
+      will-change: transform;
+    }
+    .lines-bg::before { height: 100%; left: 20%; animation: lineFloat 8s ease-in-out infinite; }
+    .lines-bg::after  { height: 80%; right: 25%; top: 10%; animation: lineFloat 10s ease-in-out infinite reverse; }
+
+    .form-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .form-left {}
+    .form-promise {
+      margin-top: 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .promise-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+    }
+    .promise-dot {
+      flex-shrink: 0;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin-top: 6px;
+    }
+    .promise-text {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text);
+    }
+    .promise-text strong {
+      display: block;
+      color: var(--dark);
+      margin-bottom: 4px;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+    }
+
+    /* Form */
+    .form-right {}
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .field label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent2);
+    }
+    .field input,
+    .field select,
+    .field textarea {
+      background: var(--milk);
+      border: 1px solid transparent;
+      border-bottom-color: var(--warm);
+      padding: 14px 16px;
+      font-size: 15px;
+      font-family: inherit;
+      color: var(--dark);
+      outline: none;
+      transition: border-color 0.3s, background 0.3s;
+      appearance: none;
+      width: 100%;
+    }
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--accent);
+      background: #fff;
+    }
+    .field textarea { min-height: 120px; resize: vertical; }
+    .field select {
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c8a97e' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 40px;
+    }
+
+    .form-submit {
+      margin-top: 8px;
+    }
+    .btn-submit {
+      width: 100%;
+      padding: 18px;
+      background: var(--accent2);
+      color: #fff;
+      border: none;
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-submit::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: left 0.5s;
+    }
+    .btn-submit:hover::before { left: 100%; }
+    .btn-submit:hover {
+      background: var(--dark);
+      box-shadow: 0 12px 40px rgba(44,36,22,0.3);
+    }
+    .btn-submit:active { transform: scale(0.99); }
+
+    /* Success message */
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 60px 40px;
+      background: var(--milk);
+    }
+    .form-success.show { display: block; }
+    .success-icon {
+      width: 64px; height: 64px;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+    .success-icon svg { stroke: var(--accent); fill: none; }
+    .success-title { font-size: 28px; font-weight: 300; color: var(--dark); margin-bottom: 12px; }
+    .success-text { font-size: 15px; color: var(--text); line-height: 1.7; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--dark);
+      padding: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    .footer-logo { font-size: 20px; letter-spacing: 3px; color: #fff; }
+    .footer-logo span { color: var(--accent); }
+    .footer-copy { font-size: 12px; color: rgba(255,255,255,0.35); letter-spacing: 1px; }
+    .footer-links { display: flex; gap: 32px; }
+    .footer-links a {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .footer-links a:hover { color: var(--accent); }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+    @keyframes scrollLine {
+      0%, 100% { transform: scaleY(1); opacity: 1; }
+      50% { transform: scaleY(0.4); opacity: 0.3; }
+    }
+    @keyframes lineFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-40px); }
+    }
+
+    /* Reveal animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      nav { padding: 20px 24px; }
+      nav.scrolled { padding: 14px 24px; }
+      .nav-links { display: none; }
+      .hero-content { padding: 0 24px; }
+      .hero-image { display: none; }
+      .section-inner { padding: 0 24px; }
+      .product-grid { grid-template-columns: 1fr; gap: 40px; }
+      .product-cards { grid-template-columns: 1fr; }
+      .form-layout { grid-template-columns: 1fr; gap: 40px; }
+      .form-row { grid-template-columns: 1fr; }
+      .stats-bar { gap: 40px; padding: 32px 24px; }
+      footer { padding: 40px 24px; flex-direction: column; align-items: flex-start; }
+      .gallery-strip { height: 200px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav id="nav">
+  <div class="nav-logo">MEBEL<span>.</span>STUDIO</div>
+  <ul class="nav-links">
+    <li><a href="#hero">Главная</a></li>
+    <li><a href="#product">О продукте</a></li>
+    <li><a href="#form-section">Заявка</a></li>
+  </ul>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section id="hero">
+  <div class="grid-bg" id="gridBg"></div>
+
+  <div class="blob blob-1" id="blob1"></div>
+  <div class="blob blob-2" id="blob2"></div>
+  <div class="blob blob-3" id="blob3"></div>
+
+  <!-- Decorative shape -->
+  <div class="shape" style="top:20%;right:48%;font-size:180px;opacity:0.04;color:var(--accent2);">◆</div>
+  <div class="shape" style="bottom:15%;right:52%;font-size:80px;opacity:0.05;color:var(--accent);">○</div>
+
+  <div class="hero-image">
+    <div class="hero-image-inner" id="heroImg"></div>
+    <div class="hero-overlay"></div>
+  </div>
+
+  <div class="hero-content">
+    <span class="hero-tag">Премиум мебель · Ташкент</span>
+    <h1 class="hero-title">
+      Диваны для<br><em>настоящего</em><br>комфорта
+    </h1>
+    <p class="hero-desc">
+      Мы создаём мебель, которая становится сердцем вашего дома.
+      Каждый диван — это история уюта, рассказанная в деталях.
+    </p>
+    <div class="hero-btns">
+      <a href="#product" class="btn-primary">Смотреть коллекцию</a>
+      <a href="#form-section" class="btn-outline">Оставить заявку</a>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    <span class="scroll-text">Scroll</span>
+  </div>
+</section>
+
+<!-- ─── STATS ─── -->
+<div class="stats-bar">
+  <div class="stat-item reveal">
+    <span class="stat-num" data-count="1200">0</span>
+    <span class="stat-label">Довольных клиентов</span>
+  </div>
+  <div class="stat-item reveal reveal-delay-1">
+    <span class="stat-num" data-count="350">0</span>
+    <span class="stat-label">Моделей мебели</span>
+  </div>
+  <div class="stat-item reveal reveal-delay-2">
+    <span class="stat-num" data-count="12">0</span>
+    <span class="stat-label">Лет на рынке</span>
+  </div>
+  <div class="stat-item reveal reveal-delay-3">
+    <span class="stat-num" data-count="48">0</span>
+    <span class="stat-label">Часов доставки</span>
+  </div>
+</div>
+
+<!-- ─── PRODUCT ─── -->
+<section id="product">
+  <div class="orb orb-1" id="orb1"></div>
+  <div class="orb orb-2" id="orb2"></div>
+
+  <div class="section-inner">
+    <div class="product-grid">
+      <div class="product-text">
+        <span class="section-tag reveal">О нашей мебели</span>
+        <h2 class="section-title reveal reveal-delay-1">
+          Качество, которое<br>можно <em>почувствовать</em>
+        </h2>
+        <p class="product-desc reveal reveal-delay-2">
+          Наши диваны и мягкая мебель создаются из отборных материалов
+          европейского качества. Каждое изделие проходит многоступенчатый
+          контроль качества и рассчитано на десятилетия безупречной службы.
+        </p>
+        <p class="product-desc reveal reveal-delay-3" style="margin-bottom:32px;">
+          Мы предлагаем широкий выбор тканей, цветов и конфигураций.
+          Ваш диван будет создан именно под вас.
+        </p>
+        <ul class="features-list">
+          <li class="reveal reveal-delay-1">Натуральные и гипоаллергенные ткани</li>
+          <li class="reveal reveal-delay-2">Ортопедические наполнители высшего класса</li>
+          <li class="reveal reveal-delay-3">Деревянный каркас из массива дуба</li>
+          <li class="reveal reveal-delay-4">Гарантия 5 лет на каркас и механизмы</li>
+        </ul>
+      </div>
+
+      <div class="product-visual reveal reveal-delay-2">
+        <div class="product-img-wrap">
+          <img
+            src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=800&q=80"
+            alt="Премиум диван"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature cards -->
+    <div class="product-cards">
+      <div class="product-card reveal">
+        <div class="card-icon">
+          <svg viewBox="0 0 48 48"><path d="M4 32V20a4 4 0 014-4h32a4 4 0 014 4v12M2 32h44M8 36h32"/><circle cx="12" cy="38" r="3"/><circle cx="36" cy="38" r="3"/></svg>
+        </div>
+        <h3 class="card-title">Диваны</h3>
+        <p class="card-desc">Угловые, прямые, модульные — любая конфигурация для любого пространства.</p>
+      </div>
+      <div class="product-card reveal reveal-delay-1">
+        <div class="card-icon">
+          <svg viewBox="0 0 48 48"><rect x="6" y="14" width="36" height="24" rx="2"/><path d="M14 14V10a2 2 0 012-2h16a2 2 0 012 2v4M6 38v4M42 38v4"/></svg>
+        </div>
+        <h3 class="card-title">Кресла</h3>
+        <p class="card-desc">Лаунж-кресла, реклайнеры, кресла-качалки. Комфорт в каждой детали.</p>
+      </div>
+      <div class="product-card reveal reveal-delay-2">
+        <div class="card-icon">
+          <svg viewBox="0 0 48 48"><path d="M8 28V16a2 2 0 012-2h28a2 2 0 012 2v12M4 28h40v8H4z"/><path d="M12 36v4M36 36v4"/></svg>
+        </div>
+        <h3 class="card-title">Кровати</h3>
+        <p class="card-desc">Мягкие изголовья, подъёмные механизмы, премиальные материалы обивки.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── GALLERY ─── -->
+<div class="gallery-strip">
+  <div class="gallery-strip-item">
+    <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80" alt="Гостиная" loading="lazy" />
+  </div>
+  <div class="gallery-strip-item">
+    <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=600&q=80" alt="Кресло" loading="lazy" />
+  </div>
+  <div class="gallery-strip-item">
+    <img src="https://images.unsplash.com/photo-1540574163026-643ea20ade25?w=600&q=80" alt="Спальня" loading="lazy" />
+  </div>
+  <div class="gallery-strip-item">
+    <img src="https://images.unsplash.com/photo-1505693314120-0d443867891c?w=600&q=80" alt="Интерьер" loading="lazy" />
+  </div>
+  <div class="gallery-strip-item">
+    <img src="https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=600&q=80" alt="Мебель" loading="lazy" />
+  </div>
+</div>
+
+<!-- ─── FORM ─── -->
+<section id="form-section">
+  <div class="lines-bg"></div>
+
+  <div class="section-inner">
+    <div class="form-layout">
+      <div class="form-left">
+        <span class="section-tag reveal">Оставьте заявку</span>
+        <h2 class="section-title reveal reveal-delay-1">
+          Подберём мебель<br>специально <em>для вас</em>
+        </h2>
+        <p class="product-desc reveal reveal-delay-2" style="margin-bottom:0;">
+          Заполните форму, и наш менеджер свяжется с вами в течение 1 часа.
+          Мы поможем выбрать идеальный диван под ваш интерьер и бюджет.
+        </p>
+
+        <div class="form-promise">
+          <div class="promise-item reveal reveal-delay-1">
+            <div class="promise-dot"></div>
+            <div class="promise-text">
+              <strong>Бесплатная консультация</strong>
+              Наш дизайнер подберёт мебель под ваш интерьер абсолютно бесплатно.
+            </div>
+          </div>
+          <div class="promise-item reveal reveal-delay-2">
+            <div class="promise-dot"></div>
+            <div class="promise-text">
+              <strong>Доставка по всему Узбекистану</strong>
+              Доставим и установим мебель в любой город страны.
+            </div>
+          </div>
+          <div class="promise-item reveal reveal-delay-3">
+            <div class="promise-dot"></div>
+            <div class="promise-text">
+              <strong>Оплата частями</strong>
+              Рассрочка до 24 месяцев без переплат и скрытых комиссий.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-right reveal reveal-delay-2">
+        <form id="mainForm">
+          <div class="form-row">
+            <div class="field">
+              <label>Ваше имя</label>
+              <input type="text" placeholder="Алишер" required />
+            </div>
+            <div class="field">
+              <label>Телефон</label>
+              <input type="tel" placeholder="+998 90 000 00 00" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Город</label>
+            <select>
+              <option value="">Выберите город</option>
+              <option>Ташкент</option>
+              <option>Самарканд</option>
+              <option>Бухара</option>
+              <option>Наманган</option>
+              <option>Андижан</option>
+              <option>Фергана</option>
+              <option>Другой город</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Тип мебели</label>
+            <select>
+              <option value="">Что вас интересует?</option>
+              <option>Угловой диван</option>
+              <option>Прямой диван</option>
+              <option>Модульный диван</option>
+              <option>Кресло / кресло-кровать</option>
+              <option>Кровать с мягким изголовьем</option>
+              <option>Комплект (диван + кресла)</option>
+              <option>Другое</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Бюджет</label>
+            <select>
+              <option value="">Укажите примерный бюджет</option>
+              <option>До 5 млн сум</option>
+              <option>5–10 млн сум</option>
+              <option>10–20 млн сум</option>
+              <option>Более 20 млн сум</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Комментарий</label>
+            <textarea placeholder="Расскажите о ваших предпочтениях, цвете интерьера, размерах помещения..."></textarea>
+          </div>
+
+          <div class="form-submit">
+            <button type="submit" class="btn-submit">Отправить заявку</button>
+          </div>
+        </form>
+
+        <div class="form-success" id="formSuccess">
+          <div class="success-icon">
+            <svg width="28" height="28" viewBox="0 0 28 28"><polyline points="4 14 11 21 24 8" stroke-width="2"/></svg>
+          </div>
+          <h3 class="success-title">Заявка отправлена!</h3>
+          <p class="success-text">Наш менеджер свяжется с вами в течение 1 часа.<br>Спасибо, что выбрали MEBEL.STUDIO!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-logo">MEBEL<span>.</span>STUDIO</div>
+  <div class="footer-links">
+    <a href="#hero">Главная</a>
+    <a href="#product">Коллекция</a>
+    <a href="#form-section">Заявка</a>
+  </div>
+  <div class="footer-copy">© 2024 MEBEL STUDIO. Все права защищены.</div>
+</footer>
+
+<script>
+  // ─── NAV scroll ───
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+
+  // ─── Parallax ───
+  const gridBg    = document.getElementById('gridBg');
+  const blob1     = document.getElementById('blob1');
+  const blob2     = document.getElementById('blob2');
+  const blob3     = document.getElementById('blob3');
+  const heroImg   = document.getElementById('heroImg');
+  const orb1      = document.getElementById('orb1');
+  const orb2      = document.getElementById('orb2');
+
+  let ticking = false;
+
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(updateParallax);
+      ticking = true;
+    }
+  }
+
+  function updateParallax() {
+    const sy = window.scrollY;
+
+    // Hero parallax
+    gridBg.style.transform   = `translateY(${sy * 0.3}px)`;
+    blob1.style.transform    = `translateY(${sy * -0.2}px) rotate(${sy * 0.02}deg)`;
+    blob2.style.transform    = `translateY(${sy * 0.15}px)`;
+    blob3.style.transform    = `translateY(${sy * -0.1}px)`;
+    heroImg.style.transform  = `translateY(${sy * 0.25}px)`;
+
+    // Product section parallax
+    const prodY = sy - document.getElementById('product').offsetTop;
+    if (orb1) orb1.style.transform = `translateY(${prodY * -0.1}px)`;
+    if (orb2) orb2.style.transform = `translateY(${prodY * 0.08}px)`;
+
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // ─── Mouse parallax on hero ───
+  document.getElementById('hero').addEventListener('mousemove', (e) => {
+    const { clientX: x, clientY: y } = e;
+    const cx = window.innerWidth / 2;
+    const cy = window.innerHeight / 2;
+    const dx = (x - cx) / cx;
+    const dy = (y - cy) / cy;
+
+    blob1.style.transform = `translate(${dx * 20}px, ${dy * 15}px)`;
+    blob2.style.transform = `translate(${dx * -15}px, ${dy * 10}px)`;
+    blob3.style.transform = `translate(${dx * 30}px, ${dy * 25}px)`;
+  });
+
+  document.getElementById('hero').addEventListener('mouseleave', () => {
+    blob1.style.transform = '';
+    blob2.style.transform = '';
+    blob3.style.transform = '';
+  });
+
+  // ─── Reveal on scroll ───
+  const reveals = document.querySelectorAll('.reveal');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  reveals.forEach(el => observer.observe(el));
+
+  // ─── Counter animation ───
+  const counters = document.querySelectorAll('.stat-num[data-count]');
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const el = e.target;
+        const target = +el.dataset.count;
+        const duration = 1800;
+        const step = target / (duration / 16);
+        let current = 0;
+        const timer = setInterval(() => {
+          current = Math.min(current + step, target);
+          el.textContent = Math.floor(current) + (target >= 100 ? '+' : '');
+          if (current >= target) clearInterval(timer);
+        }, 16);
+        counterObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  counters.forEach(c => counterObserver.observe(c));
+
+  // ─── Form submit ───
+  document.getElementById('mainForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const btn = e.target.querySelector('.btn-submit');
+    btn.textContent = 'Отправляем...';
+    btn.disabled = true;
+    setTimeout(() => {
+      document.getElementById('mainForm').style.display = 'none';
+      document.getElementById('formSuccess').classList.add('show');
+    }, 1200);
+  });
+</script>
+</body>
+</html>
