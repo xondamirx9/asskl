@@ -229,10 +229,18 @@
     .hero-image-inner {
       width: 100%;
       height: 120%;
-      background:
-        linear-gradient(135deg, rgba(250,248,245,0.4) 0%, transparent 50%),
-        url('https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&q=80') center/cover no-repeat;
+      position: relative;
+      overflow: hidden;
       will-change: transform;
+    }
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      filter: saturate(0.85) brightness(0.95);
     }
     .hero-overlay {
       position: absolute;
@@ -754,7 +762,18 @@
   <div class="shape" style="bottom:15%;right:52%;font-size:80px;opacity:0.05;color:var(--accent);">○</div>
 
   <div class="hero-image">
-    <div class="hero-image-inner" id="heroImg"></div>
+    <div class="hero-image-inner" id="heroImg">
+      <video
+        class="hero-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        poster="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1200&q=80"
+      >
+        <source src="https://videos.pexels.com/video-files/3209828/3209828-uhd_2560_1440_25fps.mp4" type="video/mp4" />
+      </video>
+    </div>
     <div class="hero-overlay"></div>
   </div>
 
@@ -869,7 +888,7 @@
 <!-- ─── GALLERY ─── -->
 <div class="gallery-strip">
   <div class="gallery-strip-item">
-    <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80" alt="Гостиная" loading="lazy" />
+    <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&q=80" alt="Гостиная" loading="lazy" />
   </div>
   <div class="gallery-strip-item">
     <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=600&q=80" alt="Кресло" loading="lazy" />
