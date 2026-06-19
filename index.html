@@ -230,8 +230,8 @@
       width: 100%;
       height: 120%;
       background:
-        linear-gradient(135deg, rgba(250,248,245,0.4) 0%, transparent 50%),
-        url('https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&q=80') center/cover no-repeat;
+        linear-gradient(135deg, rgba(250,248,245,0.3) 0%, transparent 60%),
+        url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1400&q=85') center/cover no-repeat;
       will-change: transform;
     }
     .hero-overlay {
@@ -298,8 +298,18 @@
       justify-content: center;
       gap: 80px;
       flex-wrap: wrap;
+      overflow: hidden;
     }
-    .stat-item { text-align: center; }
+    .stat-item {
+      text-align: center;
+      opacity: 0;
+      transform: translateX(-60px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .stat-item.slide-in {
+      opacity: 1;
+      transform: translateX(0);
+    }
     .stat-num {
       font-size: 42px;
       font-weight: 300;
@@ -771,19 +781,19 @@
 
 <!-- ─── STATS ─── -->
 <div class="stats-bar">
-  <div class="stat-item reveal">
+  <div class="stat-item">
     <span class="stat-num" data-count="1200">0</span>
     <span class="stat-label">Довольных клиентов</span>
   </div>
-  <div class="stat-item reveal reveal-delay-1">
+  <div class="stat-item">
     <span class="stat-num" data-count="350">0</span>
     <span class="stat-label">Моделей мебели</span>
   </div>
-  <div class="stat-item reveal reveal-delay-2">
+  <div class="stat-item">
     <span class="stat-num" data-count="12">0</span>
     <span class="stat-label">Лет на рынке</span>
   </div>
-  <div class="stat-item reveal reveal-delay-3">
+  <div class="stat-item">
     <span class="stat-num" data-count="48">0</span>
     <span class="stat-label">Часов доставки</span>
   </div>
@@ -859,7 +869,7 @@
 <!-- ─── GALLERY ─── -->
 <div class="gallery-strip">
   <div class="gallery-strip-item">
-    <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80" alt="Гостиная" loading="lazy" />
+    <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&q=80" alt="Гостиная" loading="lazy" />
   </div>
   <div class="gallery-strip-item">
     <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=600&q=80" alt="Кресло" loading="lazy" />
@@ -1079,27 +1089,39 @@
 
   reveals.forEach(el => observer.observe(el));
 
-  // ─── Counter animation ───
-  const counters = document.querySelectorAll('.stat-num[data-count]');
-  const counterObserver = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        const el = e.target;
-        const target = +el.dataset.count;
-        const duration = 1800;
-        const step = target / (duration / 16);
-        let current = 0;
-        const timer = setInterval(() => {
-          current = Math.min(current + step, target);
-          el.textContent = Math.floor(current) + (target >= 100 ? '+' : '');
-          if (current >= target) clearInterval(timer);
-        }, 16);
-        counterObserver.unobserve(el);
-      }
-    });
-  }, { threshold: 0.5 });
+  // ─── Stats: slide in from left + count up ───
+  const statItems = document.querySelectorAll('.stat-item');
 
-  counters.forEach(c => counterObserver.observe(c));
+  const statsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      const items = entry.target.parentElement.querySelectorAll('.stat-item');
+      items.forEach((item, i) => {
+        setTimeout(() => {
+          item.classList.add('slide-in');
+
+          const numEl = item.querySelector('.stat-num[data-count]');
+          if (!numEl || numEl.dataset.animated) return;
+          numEl.dataset.animated = '1';
+
+          const target = +numEl.dataset.count;
+          const duration = 1600;
+          const step = target / (duration / 16);
+          let current = 0;
+          const timer = setInterval(() => {
+            current = Math.min(current + step, target);
+            numEl.textContent = Math.floor(current) + (target >= 100 ? '+' : '');
+            if (current >= target) clearInterval(timer);
+          }, 16);
+        }, i * 150);
+      });
+
+      statsObserver.disconnect();
+    });
+  }, { threshold: 0.3 });
+
+  if (statItems.length) statsObserver.observe(statItems[0]);
 
   // ─── Form submit ───
   document.getElementById('mainForm').addEventListener('submit', (e) => {
